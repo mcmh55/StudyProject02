@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+		"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+		"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+		
+<tiles-definitions>
+	<definition name="main.tiles" template="/WEB-INF/views/main/main.jsp"></definition>
+	<!-- <definition name="regi.tiles" template="/WEB-INF/views/regi/regi.jsp"></definition> -->
+	<!-- 
+	<definition name="board_list.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="top_inc" value="/WEB-INF/views/common/top.jsp"/>
+		<put-attribute name="left_main" value="/WEB-INF/views/common/left_board_list.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/board/board_list.jsp"/>
+		<put-attribute name="bottom_inc" value="/WEB-INF/views/common/bottom.jsp"/>
+	</definition>
+	-->
+	<!-- 
+	<definition name="board_write.tiles" extends="board_list.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/board/board_write.jsp"/>
+	</definition>
+	 -->
+	
+</tiles-definitions>
