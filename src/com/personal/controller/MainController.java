@@ -18,4 +18,12 @@ public class MainController {
 		
 		return "main.tiles";
 	}
+	
+	@RequestMapping(value="login.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String login() throws Exception {
+		
+		logger.info("login.do 접근 ");
+		
+		return "login.tiles";
+	}
 }

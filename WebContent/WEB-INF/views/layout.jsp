@@ -11,19 +11,24 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<tiles:insertAttribute name="head"/>
-	<!-- css -->
-	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/bootswatch.css"/>
-	<!-- // css -->
+
+<tiles:insertAttribute name="head"/>
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/bootswatch.css"/>
+<!-- // css -->
+
+<!-- script -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!-- // script -->
+
+<!-- hold -->
+<%-- <script type="text/javascript" src="<%= request.getContextPath() %>/js/go_url_.js"></script> --%>
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
+<!-- // hold -->
 	
-	<!-- script -->
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<!-- // script -->
+<title>개인 프로젝트</title>
 	
-	<!-- hold -->
-	<%-- <script type="text/javascript" src="<%= request.getContextPath() %>/js/go_url_.js"></script> --%>
-	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
-	<!-- // hold -->
 </head>
 <body>
 

@@ -223,7 +223,7 @@
         		<div class="span4">
           			<div class="icons-box">
 						<i class="fa-icon-beaker"></i>
-						<h3>개인 프로젝트</h3>
+						<a href="login.do"><h3>개인 프로젝트</h3></a>
 						<p>
 							Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
 						</p>
