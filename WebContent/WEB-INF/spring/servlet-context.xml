@@ -32,11 +32,7 @@
 		</bean>
 		 -->
 		
-		<!-- 클래스 1개씩 생성 -->
-		<!-- <bean id="sistMemberController" class="sist.co.controller.SistMemberController"/> -->
-		
 		<!-- Configure Apache Tiles for the view -->
- 		
 		<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 			<property name="definitions">
 				<list>

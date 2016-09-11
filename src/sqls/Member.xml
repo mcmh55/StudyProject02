@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="Member">
+
+<insert id="addMember" parameterType="com.personal.model.MemberDTO">
+	INSERT INTO PP1_MEMBER
+	(
+		MEMBER_IDX, MEMBER_ID, MEMBER_PW, MEMBER_NICKNAME
+		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
+		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
+		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_AUTH
+	)
+	VALUES
+	(
+		PP1_MEMBER_SEQ.NEXTVAL, #{member_id}, #{member_pw}, #{member_nickname}
+		, #{member_name}, #{member_sex}, #{member_birthday}, #{member_address}
+		, #{member_check_email}, #{member_check_sms}, #{member_check_phone}
+		, #{member_email}, #{member_phone}, 0
+	)
+</insert>
+
+</mapper>

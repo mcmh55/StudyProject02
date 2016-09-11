@@ -1,13 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
 
 <!-- css -->
-<link rel="stylesheet" type="text/css" href="css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="css/bootswatch.css"/>
+<link rel="stylesheet" type="text/css" href="css/custom.css"/>
 <!-- // css -->
+
+<!-- script -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!-- // script -->
 
 <title>개인 프로젝트</title>
 
@@ -18,7 +23,7 @@
 	<div class="login_wrap" align="center">
 		<div class="login_box">
 		
-			<form action="" method="POST">
+			<form method="POST">
 			
 			<!-- 아이디 입력 -->
 			<div class="form-group" align="left" style="margin: 5px 30px;">
@@ -26,7 +31,7 @@
 			</div>
 			
 			<div class="form-group" style="margin: 10px 10px;">
-				<input name="member_id" class="form-control" type="text" size="50" maxlength="20"/>
+				<input name="member_id" class="form-control" type="text" size="50" maxlength="20" />
 			</div>
 			<!-- // 아이디 입력 -->
 			
@@ -36,7 +41,7 @@
 			</div>
 			
 			<div class="form-group" style="margin: 10px 10px;">
-				<input name="member_pw" class="form-control" type="text" size="50" maxlength="20"/>
+				<input name="member_pw" class="form-control" type="text" size="50" maxlength="20" />
 			</div>
 			<!-- // 비밀번호 입력 -->
 			
@@ -48,10 +53,11 @@
 			
 			<!-- 로그인, 회원가입 버튼 -->
 			<span style="margin: 0px 20px;">
-				<input type="button" class="btn btn-primary btn-lg" value="로그인"/>
+				<input type="button" id="btn_login" class="btn btn-primary btn-lg" value="로그인" />
 			</span>
 			<span style="margin: 0px 20px;">
-				<input type="button" class="btn btn-primary btn-lg" value="회원가입"/>
+				<input type="button" id="btn_join" class="btn btn-primary btn-lg" value="회원가입" 
+				data-toggle="modal" data-target="#join_popup" />
 			</span>
 			<!-- // 로그인, 회원가입 버튼 -->
 			
@@ -60,5 +66,17 @@
 	</div>
 </div>
 
+<div id="test">
+<jsp:include page="join.jsp"/>
+</div>
+
+<!-- 
+<script type="text/javascript">
+
+$('#_btn_login').click( function() {
+});
+
+</script>
+-->
 </body>
 </html>

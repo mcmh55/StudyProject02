@@ -7,6 +7,7 @@
 <tiles-definitions>
 	<definition name="main.tiles" template="/WEB-INF/views/main/main.jsp"></definition>
 	<definition name="login.tiles" template="/WEB-INF/views/main/login.jsp"></definition>
+	<definition name="join.tiles" template="/WEB-INF/views/main/join.jsp"></definition>
 	<!-- <definition name="regi.tiles" template="/WEB-INF/views/regi/regi.jsp"></definition> -->
 	<!-- 
 	<definition name="board_list.tiles" template="/WEB-INF/views/layouts-tiles.jsp">

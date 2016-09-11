@@ -26,4 +26,12 @@ public class MainController {
 		
 		return "login.tiles";
 	}
+	
+	@RequestMapping(value="join.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String join() throws Exception {
+		
+		logger.info("join.do 접근 ");
+		
+		return "join.tiles";
+	}
 }
