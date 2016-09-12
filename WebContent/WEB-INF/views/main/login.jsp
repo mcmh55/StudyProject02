@@ -67,7 +67,7 @@
 </div>
 
 <div id="test">
-<jsp:include page="join.jsp"/>
+	<jsp:include page="join.jsp"/>
 </div>
 
 <!-- 
