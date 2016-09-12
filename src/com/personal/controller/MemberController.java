@@ -41,4 +41,27 @@ public class MemberController {
 		
 		return resultMsg;
 	}
+	
+	@RequestMapping(value="twinCheckId.do", method=RequestMethod.POST)
+	@ResponseBody
+	public ResultMessage twinCheckId(MemberDTO member) {
+		
+		logger.info("twinCheckId.do 접근");
+		logger.info("member: " + member.toString());
+		
+		ResultMessage resultMsg = null;
+		
+		try {
+			
+			memberService.addMember(member);
+			resultMsg = new ResultMessage("Success");
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			resultMsg = new ResultMessage("Fail");
+		}
+		
+		return resultMsg;
+	}
 }
