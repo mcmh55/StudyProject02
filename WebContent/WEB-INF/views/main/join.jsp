@@ -24,210 +24,212 @@ th {
 
 <!-- 회원가입(Modal 방식) -->
 <div class="modal fade" id="join_popup" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" data-backdrop="static">
+aria-labelledby="myModalLabel" data-backdrop="static">
 <div class="modal-dialog" role="document" style="width: 700px;">
 <div class="modal-content">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<h3 class="modal-title" id="myModalLabel">회원정보 작성</h3>
-	</div>
-	<div class="modal-body" style="padding-bottom: 0px;">
-		<form id="frm_join">
-			<div class="join_wrap">
-				<table class="table table-striped" style="width: 100%;">
-				<col style="width: 25%;" /><col style="width: 75%;" />
-				
-				<tr>
-					<th>아이디</th>
-					<td>
-						<input type="text" id="member_id" name="member_id" class="form-control" size="20" maxlength="20" />
-						<!-- <input type="button" id="id_cfm" class="btn btn-danger" value="중복체크" data-loading-text="읽는중..." style="font-size: 10pt;" /> -->
-						<button type="button" id="id_cfm" class="btn btn-danger" data-loading-text="읽는중..." 
-						style="font-size: 10pt;">중복체크</button>
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h3 class="modal-title" id="myModalLabel">회원정보 작성</h3>
+</div>
+<div class="modal-body" style="padding-bottom: 0px;">
+	<form id="frm_join">
+		<div class="join_wrap">
+			<table class="table table-striped" style="width: 100%;">
+			<col style="width: 25%;" /><col style="width: 75%;" />
+			
+			<tr>
+				<th>아이디</th>
+				<td>
+					<input type="text" id="member_id" name="member_id" class="form-control" size="20" maxlength="20" />
+					<!-- <input type="button" id="id_cfm" class="btn btn-danger" value="중복체크" data-loading-text="읽는중..." style="font-size: 10pt;" /> -->
+					<button type="button" id="id_cfm" class="btn btn-danger" data-loading-text="읽는중..." 
+					style="font-size: 10pt;">중복체크</button>
+					<br/>
+					<div class="text-muted guide">※ 영문 + 숫자 조합 6~12글자</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>비밀번호</th>
+				<td>
+					<input type="password" id="member_pw" name="member_pw" class="form-control" size="20" maxlength="20" />
+					<br/>
+					<div class="text-muted guide">
+						※ 영문 소문자 + 영문 대문자 + 숫자 + 특수문자 조합 8~12글자
 						<br/>
-						<div class="text-muted guide">※ 영문 + 숫자 조합 6~12글자</div>
-					</td>
-				</tr>
-				
-				<tr>
-					<th>비밀번호</th>
-					<td>
-						<input type="password" id="member_pw" name="member_pw" class="form-control" size="20" maxlength="20" />
-						<br/>
-						<div class="text-muted guide">
-							※ 영문 소문자 + 영문 대문자 + 숫자 + 특수문자 조합 8~12글자
-							<br/>
-							※ 사용 가능한 특수문자( ! &quot; # $ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ ] ^ _ ' { | } ~ )
-						</div>
-					</td>
-				</tr>
-				
-				<tr>
-					<th>비밀번호 확인</th>
-					<td>
-						<input type="password" id="member_pw_confirm" class="form-control" size="20" maxlength="20" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>닉네임</th>
-					<td>
-						<input type="text" id="member_nickname" name="member_nickname" class="form-control" size="20" maxlength="20" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>이름</th>
-					<td>
-						<input type="text" id="member_name" name="member_name" class="form-control" size="20" maxlength="20" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>성별</th>
-					<td>
-						<input type="radio" name="member_sex" value="1" checked="checked" style="margin-right: 5px;" />남
-						&nbsp;&nbsp;
-						<input type="radio" name="member_sex" value="2" style="margin-right: 5px;" />여
-					</td>
-				</tr>
-				
-				<tr>
-					<th>생년월일</th>
-					<td>
-						<% Calendar cal = Calendar.getInstance(); %>
-						<c:set var="year" value="<%= cal.get(Calendar.YEAR) %>"/>
-						
-						<select id="birthday_year" class="form-control" style="margin: 0px;">
-							<!-- 만 14세 이상 -->
-							<c:forEach var="i" begin="0" end="${ year - 1900 - 14 }">
-								<option label="${ (year-14) - i }" value="${ (year-14) - i }"></option>
-							</c:forEach>
-						</select>
-						
-						<select id="birthday_month" class="form-control">
-							<c:forEach var="i" begin="1" end="12">
-								<option label="${ i }" value="${ i }"></option>
-							</c:forEach>
-						</select>
-						
-						<select id="birthday_day" class="form-control">
-						</select>
-					</td>
-				</tr>
-				
-				<tr>
-					<th>자택 주소</th>
-					<td>
-						<div style="margin-bottom: 5px;">
-							<input type="text" id="address_postcode" class="form-control" placeholder="우편번호" />
-							<input type="button" class="btn btn-default" 
-							onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="font-size: 10pt;" />
-						</div>
-						<div style="margin-bottom: 5px;">
-							<input type="text" id="address_road" class="form-control" placeholder="도로명주소" style="width: 100%;" />
-						</div>
-						<div>
-							<input type="text" id="address_jibun" class="form-control" placeholder="지번주소" style="width: 100%;" />
-						</div>
-						<span id="guide" style="color:#999;"></span>
-					</td>
-				</tr>
-				
-				<tr>
-					<th>마케팅 수신 동의</th>
-					<td>
-						<table class="table table-striped table-hover" style="text-align: center; margin: 0px;">
-						<tr class="warning">
-							<th style="text-align: center">모두 체크</th>
-							<th style="text-align: center">Email</th>
-							<th style="text-align: center">SMS</th>
-							<th style="text-align: center">Phone</th>
-						</tr>
-						<tr>
-							<td>
-								<input type="checkbox" id="_check_all" />
-							</td>
-							<td>
-								<input type="checkbox" id="_check_email" name="check_email" />
-							</td>
-							<td>
-								<input type="checkbox" id="_check_sms" name="check_sms" />
-							</td>
-							<td>
-								<input type="checkbox" id="_check_phone" name="check_phone" />
-							</td>
-						</tr>
-						</table>
-					</td>
-				</tr>
-				
-				<tr>
-					<th>Email</th>
-					<td style="vertical-align: top;">
-						<input type="text" id="email_id" class="form-control" size="10" maxlength="64" />
-						&nbsp;@&nbsp;
-						<select id="email_domain_list" class="form-control">
-							<option selected="selected">직접 입력</option>
-							<option>naver.com</option>
-							<option>gmail.com</option>
-							<option>hanmail.net</option>
-						</select>
-						<input type="text" id="email_domain" class="form-control" size="10" maxlength="255" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>Phone</th>
-					<td>
-						<select class="form-control">
-							<option id="phone_left" selected="selected">010</option>
-							<option>011</option>
-							<option>016</option>
-							<option>017</option>
-							<option>018</option>
-							<option>019</option>
-						</select>
-						-
-						<input type="text" id="phone_center" class="form-control" size="5" maxlength="4" />
-						-
-						<input type="text" id="phone_right" class="form-control" size="5" maxlength="4" />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>자동 가입 방지</th>
-					<td>
-						<img src="jcaptcha.jpg" /> 
-						<input type="text" name="jcaptcha" class="form-control" value="" />
-					</td>
-				</tr>
-				
-				</table>
-				
-				<input type="hidden" id="member_birthday" name="member_birthday" value="" />
-				<input type="hidden" id="member_address" name="member_address" value="" />
-				<input type="hidden" id="member_email" name="member_email" value="" />
-				<input type="hidden" id="member_phone" name="member_phone" value="" />
-				
-			</div>
-		</form>
-	</div>
-	<div class="modal-footer" style="text-align: center;">
-		<input type="submit" id="join_cfm" class="btn btn-success" 
-		value="회원 등록" style="width: 150px; font-size: 12pt;" />
-		<button type="button" id="frm_join_close" class="btn btn-default" data-dismiss="modal" style="font-size: 12pt;">닫기</button>
-	</div>
+						※ 사용 가능한 특수문자( ! &quot; # $ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ ] ^ _ ' { | } ~ )
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>비밀번호 확인</th>
+				<td>
+					<input type="password" id="member_pw_confirm" class="form-control" size="20" maxlength="20" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>닉네임</th>
+				<td>
+					<input type="text" id="member_nickname" name="member_nickname" class="form-control" size="20" maxlength="20" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>이름</th>
+				<td>
+					<input type="text" id="member_name" name="member_name" class="form-control" size="20" maxlength="20" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>성별</th>
+				<td>
+					<input type="radio" name="member_sex" value="1" checked="checked" style="margin-right: 5px;" />남
+					&nbsp;&nbsp;
+					<input type="radio" name="member_sex" value="2" style="margin-right: 5px;" />여
+				</td>
+			</tr>
+			
+			<tr>
+				<th>생년월일</th>
+				<td>
+					<% Calendar cal = Calendar.getInstance(); %>
+					<c:set var="year" value="<%= cal.get(Calendar.YEAR) %>"/>
+					
+					<select id="birthday_year" class="form-control" style="margin: 0px;">
+						<!-- 만 14세 이상 -->
+						<c:forEach var="i" begin="0" end="${ year - 1900 - 14 }">
+							<option label="${ (year-14) - i }" value="${ (year-14) - i }"></option>
+						</c:forEach>
+					</select>
+					
+					<select id="birthday_month" class="form-control">
+						<c:forEach var="i" begin="1" end="12">
+							<option label="${ i }" value="${ i }"></option>
+						</c:forEach>
+					</select>
+					
+					<select id="birthday_day" class="form-control">
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>자택 주소</th>
+				<td>
+					<div style="margin-bottom: 5px;">
+						<input type="text" id="address_postcode" class="form-control" placeholder="우편번호" />
+						<input type="button" class="btn btn-default" 
+						onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="font-size: 10pt;" />
+					</div>
+					<div style="margin-bottom: 5px;">
+						<input type="text" id="address_road" class="form-control" placeholder="도로명주소" style="width: 100%;" />
+					</div>
+					<div>
+						<input type="text" id="address_jibun" class="form-control" placeholder="지번주소" style="width: 100%;" />
+					</div>
+					<span id="guide" style="color:#999;"></span>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>마케팅 수신 동의</th>
+				<td>
+					<table class="table table-striped table-hover" style="text-align: center; margin: 0px;">
+					<tr class="warning">
+						<th style="text-align: center">모두 체크</th>
+						<th style="text-align: center">Email</th>
+						<th style="text-align: center">SMS</th>
+						<th style="text-align: center">Phone</th>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" id="_check_all" />
+						</td>
+						<td>
+							<input type="checkbox" id="_check_email" name="check_email" />
+						</td>
+						<td>
+							<input type="checkbox" id="_check_sms" name="check_sms" />
+						</td>
+						<td>
+							<input type="checkbox" id="_check_phone" name="check_phone" />
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>Email</th>
+				<td style="vertical-align: top;">
+					<input type="text" id="email_id" class="form-control" size="10" maxlength="64" />
+					&nbsp;@&nbsp;
+					<select id="email_domain_list" class="form-control">
+						<option selected="selected">직접 입력</option>
+						<option>naver.com</option>
+						<option>gmail.com</option>
+						<option>hanmail.net</option>
+					</select>
+					<input type="text" id="email_domain" class="form-control" size="10" maxlength="255" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>Phone</th>
+				<td>
+					<select class="form-control">
+						<option id="phone_left" selected="selected">010</option>
+						<option>011</option>
+						<option>016</option>
+						<option>017</option>
+						<option>018</option>
+						<option>019</option>
+					</select>
+					-
+					<input type="text" id="phone_center" class="form-control" size="5" maxlength="4" />
+					-
+					<input type="text" id="phone_right" class="form-control" size="5" maxlength="4" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>자동 가입 방지</th>
+				<td>
+					<img src="jcaptcha.jpg" /> 
+					<input type="text" name="jcaptcha" class="form-control" value="" />
+				</td>
+			</tr>
+			
+			</table>
+			
+			<input type="hidden" id="member_birthday" name="member_birthday" value="" />
+			<input type="hidden" id="member_address" name="member_address" value="" />
+			<input type="hidden" id="member_email" name="member_email" value="" />
+			<input type="hidden" id="member_phone" name="member_phone" value="" />
+			
+		</div>
+	</form>
+</div>
+<div class="modal-footer" style="text-align: center;">
+	<input type="submit" id="join_cfm" class="btn btn-success" 
+	value="회원 등록" style="width: 150px; font-size: 12pt;" />
+	<button type="button" id="frm_join_close" class="btn btn-default" data-dismiss="modal" style="font-size: 12pt;">닫기</button>
+</div>
 </div>
 </div>
 </div>
 
 <!-- 알림 팝업 -->
-<div id="system_alert" class="alert alert-dismissible alert-danger" style="position: absolute;">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
+<div id="system_alert" class="alert alert-dismissible alert-danger"
+style="position: fixed; width: 400px; top: 20px; left: 50%; margin-left: -200px; z-index: 9999; text-align: center;
+/* transform: translate(-50%, -50%); */">
+	<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+	<strong>이미 존재하는 아이디입니다!</strong>
 </div>
 
 
@@ -246,11 +248,13 @@ $(document).ready(function() {
 		createBirthdayList();
 	});
 
-	/* 아이디 중복 체크 */
+	/*		아이디 중복 체크		*/
 	$('#id_cfm').click(function() {
-	//	alert("중복체크 클릭");
-		$('#system_alert').show();
-		/* 
+		
+		$('#system_alert').slideDown('fast', function() {
+			setTimeout(function() { $('#system_alert').slideUp('fast'); }, 1000);
+		});
+		
 		$.ajax({
 			
 			url: "twinCheckId.do",
@@ -266,12 +270,13 @@ $(document).ready(function() {
 				console.log(result);
 			}
 		});
-		*/
+		
 	});
-	/* // 아이디 중복 체크 */
+	/* 	  // 아이디 중복 체크 		*/
 	
 	/* 회원 등록 처리 */
 	$('#join_cfm').click(function() {
+		
 		/* 		입력 값 변환		 */
 		
 		/* 생일 */
@@ -318,7 +323,7 @@ $(document).ready(function() {
 		var test = "";
 		/* // 유효 값 검사 */
 		
-		/* DB 저장 */
+		/*		DB 저장		*/
 		$.ajax({
 			
 			url: "joinAction.do",
@@ -334,10 +339,10 @@ $(document).ready(function() {
 				console.log(result);
 			}
 		});
-		/* // DB 저장 */
+		/*	  // DB 저장		*/
 	});
 
-	/* 회원 등록 취소 */
+	/*		회원 등록 취소		*/
 	$('#frm_join_close').click(function() {
 		
 		var result = confirm("작성하신 내용이 사라집니다. 취소하시겠습니까?");
@@ -348,14 +353,14 @@ $(document).ready(function() {
 			
 		return false;
 	});
-	/* // 회원 등록 취소 */
+	/*	  // 회원 등록 취소		*/
 });
 
 
 /*			function		*/
 /* 		▼ ▼ ▼ ▼ ▼ ▼	▼ ▼		*/
 
-/* 생년월일(연도/월/일) 설정 */
+/*		생년월일(연도/월/일) 설정		*/
 function createBirthdayList() {
 	var selYear = $("#birthday_year").val();
 	var selMonth = $("#birthday_month").val();
@@ -370,9 +375,9 @@ function createBirthdayList() {
 	$("#birthday_day").html(htmlTag);
 	// $("#birthday_day option:eq(" + memberDay + ")").attr("selected", "selected");
 }
-/* // 생년월일(연/월/일) 설정 */
+/*	  // 생년월일(연/월/일) 설정		*/
 
-/* 다음 주소 API */
+/*		다음 주소 API		*/
 function sample4_execDaumPostcode() {
 	new daum.Postcode( {
 		oncomplete : function(data) {
@@ -426,6 +431,6 @@ function sample4_execDaumPostcode() {
 		}
 	}).open();
 }
-/* // 다음 주소 API */
+/*	  // 다음 주소 API		*/
 
 </script>
