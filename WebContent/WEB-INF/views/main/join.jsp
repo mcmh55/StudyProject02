@@ -24,11 +24,11 @@ th {
 
 <!-- 회원가입(Modal 방식) -->
 <div class="modal fade" id="join_popup" tabindex="-1" role="dialog"
-aria-labelledby="myModalLabel" data-backdrop="static">
+aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 <div class="modal-dialog" role="document" style="width: 700px;">
 <div class="modal-content">
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div class="modal-header" align="center">
+	<button type="button" id="btn_modal_x" class="close" data-dismiss="modal" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
 	<h3 class="modal-title" id="myModalLabel">회원정보 작성</h3>
@@ -42,7 +42,7 @@ aria-labelledby="myModalLabel" data-backdrop="static">
 			<tr>
 				<th>아이디</th>
 				<td>
-					<input type="text" id="member_id" name="member_id" class="form-control" size="20" maxlength="20" />
+					<input type="text" id="member_id" name="member_id" class="form-control" size="20" maxlength="12" />
 					<!-- <input type="button" id="id_cfm" class="btn btn-danger" value="중복체크" data-loading-text="읽는중..." style="font-size: 10pt;" /> -->
 					<button type="button" id="id_cfm" class="btn btn-danger" data-loading-text="읽는중..." 
 					style="font-size: 10pt;">중복체크</button>
@@ -54,7 +54,7 @@ aria-labelledby="myModalLabel" data-backdrop="static">
 			<tr>
 				<th>비밀번호</th>
 				<td>
-					<input type="password" id="member_pw" name="member_pw" class="form-control" size="20" maxlength="20" />
+					<input type="password" id="member_pw" name="member_pw" class="form-control" size="20" maxlength="12" />
 					<br/>
 					<div class="text-muted guide">
 						※ 영문 소문자 + 영문 대문자 + 숫자 + 특수문자 조합 8~12글자
@@ -74,7 +74,9 @@ aria-labelledby="myModalLabel" data-backdrop="static">
 			<tr>
 				<th>닉네임</th>
 				<td>
-					<input type="text" id="member_nickname" name="member_nickname" class="form-control" size="20" maxlength="20" />
+					<input type="text" id="member_nickname" name="member_nickname" class="form-control" size="20" maxlength="12" />
+					<br/>
+					<div class="text-muted guide">※ 한글 최대 10글자, 영문 최대 20글자(혼용 가능)</div>
 				</td>
 			</tr>
 			
@@ -218,20 +220,19 @@ aria-labelledby="myModalLabel" data-backdrop="static">
 <div class="modal-footer" style="text-align: center;">
 	<input type="submit" id="join_cfm" class="btn btn-success" 
 	value="회원 등록" style="width: 150px; font-size: 12pt;" />
-	<button type="button" id="frm_join_close" class="btn btn-default" data-dismiss="modal" style="font-size: 12pt;">닫기</button>
+	
+	<button type="button" id="frm_join_close" class="btn btn-default" 
+	data-dismiss="modal" style="font-size: 12pt;">닫기</button>
 </div>
 </div>
 </div>
 </div>
 
 <!-- 알림 팝업 -->
-<div id="system_alert" class="alert alert-dismissible alert-danger"
-style="position: fixed; width: 400px; top: 20px; left: 50%; margin-left: -200px; z-index: 9999; text-align: center;
+<div id="system_alert" style="position: fixed; width: 400px; top: 20px; left: 50%; margin-left: -200px; z-index: 9999; text-align: center;
 /* transform: translate(-50%, -50%); */">
 	<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
-	<strong>이미 존재하는 아이디입니다!</strong>
 </div>
-
 
 <!--		script			-->
 <!-- 	▼ ▼ ▼ ▼ ▼ ▼	▼ ▼		-->
@@ -239,45 +240,78 @@ style="position: fixed; width: 400px; top: 20px; left: 50%; margin-left: -200px;
 <script type="text/javascript">
 
 $(document).ready(function() {
+	
+	var confirmId = "";		// 중복 체크 완료된 아이디 저장
+	var nicknameLeng = 0;	// 닉네임 길이 저장 ※ Byte
+	
+	/*		페이지 초기 설정		*/
+	
 	// 생년월일 리스트 설정
 	createBirthdayList();
+	
+	// 숨김
 	$('#system_alert').hide();
+	$('#btn_modal_x').hide();
+	
+	/*	 // 페이지 초기 설정		*/
+	
+	/*		실시간 체크		*/
+	
+	$('#member_nickname').keypress(function() {
+		nicknameLeng = $(this).val().length;
+		alert("nicknameLeng: " + nicknameLeng);
+		
+	});
 	
 	// 생년월일 중 '연도 or 월'이 변경 되었을 때 '일'의 리스트를 다시 설정
 	$("#birthday_year, #birthday_month").change(function() {
 		createBirthdayList();
+	
 	});
+	/*	 // 실시간 체크		*/
 
 	/*		아이디 중복 체크		*/
 	$('#id_cfm').click(function() {
 		
-		$('#system_alert').slideDown('fast', function() {
-			setTimeout(function() { $('#system_alert').slideUp('fast'); }, 1000);
-		});
+		var inputId = $('#member_id').val();
+		var resultId = checkValue("id", inputId);
+		
+		if ( !resultId ) {
+			$('#member_id').val('').focus();
+			return false;
+		}
 		
 		$.ajax({
-			
-			url: "twinCheckId.do",
+			url: "sameCheckId.do",
 			type: "POST",
-			data: { "member_id" : $("#member_id").val() },
+			data: { "member_id" : inputId },
 			success: function(result) {
-				alert("아이디 중복체크 완료");
 				console.log(result);
 				
+				if ( result.message == "true" )	{
+					$('#system_alert').attr('class', 'alert alert-dismissible alert-danger');
+					$('#system_alert').html('<strong>이미 존재하는 아이디입니다!</strong>');
+				} else {
+					$('#system_alert').attr('class', 'alert alert-dismissible alert-success');
+					$('#system_alert').html('<strong>사용 가능한 아이디입니다.</strong>');
+					confirmId = inputId;
+				}
+				$('#system_alert').slideDown('fast', function() {
+					setTimeout(function() { $('#system_alert').slideUp('fast'); }, 1000);
+				});
 			},
 			error: function(result) {
 				alert("잠시 후 다시 이용해주세요.");
 				console.log(result);
 			}
 		});
-		
 	});
 	/* 	  // 아이디 중복 체크 		*/
 	
 	/* 회원 등록 처리 */
 	$('#join_cfm').click(function() {
 		
-		/* 		입력 값 변환		 */
+		/* 		유효값 검사 & 입력 값 변환		 */
 		
 		/* 생일 */
 		var birYear = $('#birthday_year').val();
@@ -317,22 +351,51 @@ $(document).ready(function() {
 		$('#member_phone').val(phone);
 		/* // 휴대전화 */
 		
-		/* 		// 입력 값 변환		*/
+		/* 	  // 유효값 검사 & 입력 값 변환		*/
 		
-		/* 유효 값 검사 */
-		var test = "";
-		/* // 유효 값 검사 */
+		/*		유효값 검사		*/
+		
+		// 중복 체크된 아이디인지 검사
+		if ( confirmId == $('#member_id').val() ) {
+			
+			alert("중복체크 되지 않은 아이디입니다.");
+			$('#member_id').focus();
+			
+			return false;
+		}
+		
+		// 비밀번호 검사
+		var resultPw = checkValue("pw", $('#member_pw').val());
+		if ( !resultPw ) {
+			
+			$('#member_pw').focus();
+			
+			return false;
+		}
+		
+		// 비밀번호 확인 검사
+		if ( $('#member_pw').val() != ('#member_pw_confirm').val() ) {
+			
+			alert("비밀번호 확인을 다시 확인해주세요.");
+			$('#member_pw_confirm').focus();
+			
+			return false;
+		}
+		
+		// 닉네임 검사
+		var resultNickname = checkValue("nickname", $('#member_nickname').val());
+		
+		/*	  // 유효값 검사	*/
 		
 		/*		DB 저장		*/
 		$.ajax({
-			
 			url: "joinAction.do",
 			type: "POST",
 			data: $('#frm_join').serialize(),
 			success: function(result) {
 				alert("정상적으로 등록되었습니다.");
 				console.log(result);
-				$('#frm_join_close').click();
+				$('#btn_modal_x').click();
 			},
 			error: function(result) {
 				alert("잠시 후 다시 이용해주세요.");
@@ -433,4 +496,74 @@ function sample4_execDaumPostcode() {
 }
 /*	  // 다음 주소 API		*/
 
+/*		유효값 체크		*/
+function checkValue(type, text) {
+	// 아래 문자열에 해당되지 않은 문자만 가능 ※ '^'
+	var strEng = /[^a-z]/i;
+	var strNum = /[^0-9]/;
+	var strSpe = /[^\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+	vat strKorEng = /[^ㄱ-ㅎㅏ-ㅣ가-힣a-z]/i;
+	var strEngNum = /[^a-z0-9]/i;
+	var strEngNumSpe = /[^a-z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+	
+	var regex = "";
+	
+	// 아이디 검사
+	if ( type == "id" ) {
+		// 공백 확인
+		if ( text.trim() == '' ) {
+			alert("아이디를 입력해주세요.");
+			
+			return false;
+		}
+		
+		// 글자수 확인
+		if ( text.length < 6 ) {
+			alert("최소 6글자 이상 입력해주세요.");
+			
+			return false;
+		}
+		
+		regex = strEngNum;
+		if ( regex.test(text) ) {
+			alert("올바르게 입력해주세요.");
+			
+			return false;
+		}
+	// 비밀번호 검사	
+	} else if ( type == "pw" ) {
+		// 공백 확인
+		if ( text.trim() == '' ) {
+			alert("비밀번호를 입력해주세요.");
+			
+			return false;
+		}
+		
+		// 글자수 확인
+		if ( text.length < 8 ) {
+			alert("최소 8글자 이상 입력해주세요.");
+			
+			return false;
+		}
+		
+		regex = strEngNumSpe;
+		if ( regex.test(text) ) {
+			alert("올바르게 입력해주세요.");
+			
+			return false;
+		}
+	// 닉네임 검사	
+	} else if ( type == "nickname" ) {
+		// 공백 확인
+		if ( text.trim() == '' ) {
+			alert("닉네임을 입력해주세요.");
+			
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+/*	 // 유효값 체크		*/
 </script>

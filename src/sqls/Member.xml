@@ -22,4 +22,9 @@
 	)
 </insert>
 
+<select id="sameCheckId" parameterType="com.personal.model.MemberDTO" resultType="Integer">
+	SELECT NVL(COUNT(*), 0) FROM PP1_MEMBER
+	WHERE MEMBER_ID=#{member_id}
+</select>
+
 </mapper>
