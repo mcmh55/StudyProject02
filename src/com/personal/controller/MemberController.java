@@ -42,20 +42,23 @@ public class MemberController {
 		return resultMsg;
 	}
 	
-	@RequestMapping(value="twinCheckId.do", method=RequestMethod.POST)
+	@RequestMapping(value="sameCheckId.do", method=RequestMethod.POST)
 	@ResponseBody
-	public ResultMessage twinCheckId(MemberDTO member) {
+	public ResultMessage sameCheckId(MemberDTO member) {
 		
-		logger.info("twinCheckId.do 접근");
+		logger.info("sameCheckId.do 접근");
 		logger.info("member: " + member.toString());
 		
 		ResultMessage resultMsg = null;
+		int selectCnt = 0;
 		
 		try {
 			
-			memberService.addMember(member);
-			resultMsg = new ResultMessage("Success");
+			selectCnt = memberService.sameCheckId(member);
+			logger.info("selectCnt: " + selectCnt);
 			
+			if ( selectCnt == 0 )	resultMsg = new ResultMessage("false");
+			else					resultMsg = new ResultMessage("true");
 		} catch (Exception e) {
 			
 			e.printStackTrace();

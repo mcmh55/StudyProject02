@@ -1,7 +1,5 @@
 package com.personal.service.impl;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +10,16 @@ import com.personal.service.MemberService;
 @Service
 public class MemberImpl implements MemberService{
 
-	/*@Resource(name = "memberDAO")*/
 	@Autowired
 	private MemberDAO memberDAO;
 
 	@Override
 	public boolean addMember(MemberDTO member) throws Exception {
 		return memberDAO.addMember(member);
+	}
+
+	@Override
+	public int sameCheckId(MemberDTO member) throws Exception {
+		return memberDAO.sameCheckId(member);
 	}
 }
