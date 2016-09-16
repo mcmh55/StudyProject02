@@ -44,8 +44,7 @@ aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 				<td>
 					<input type="text" id="member_id" name="member_id" class="form-control" size="20" maxlength="12" />
 					<!-- <input type="button" id="id_cfm" class="btn btn-danger" value="중복체크" data-loading-text="읽는중..." style="font-size: 10pt;" /> -->
-					<button type="button" id="id_cfm" class="btn btn-danger" data-loading-text="읽는중..." 
-					style="font-size: 10pt;">중복체크</button>
+					<button type="button" id="id_cfm" class="btn btn-danger" style="font-size: 10pt;">중복체크</button>
 					<br/>
 					<div class="text-muted guide">※ 영문 + 숫자 조합 6~12글자</div>
 				</td>
@@ -60,6 +59,10 @@ aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 						※ 영문 소문자 + 영문 대문자 + 숫자 + 특수문자 조합 8~12글자
 						<br/>
 						※ 사용 가능한 특수문자( ! &quot; # $ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ ] ^ _ ' { | } ~ )
+						<br/>
+						※ 아이디와 동일한 글자 4개 이상 사용불가
+						<br/>
+						※ 동일한 글자 연속 4개 이상 사용불가
 					</div>
 					
 				</td>
@@ -166,13 +169,13 @@ aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 							<input type="checkbox" id="market_check_all" />
 						</td>
 						<td>
-							<input type="checkbox" id="market_check_email" name="check_email" />
+							<input type="checkbox" id="market_check_email" name="member_check_email" value="1" />
 						</td>
 						<td>
-							<input type="checkbox" id="market_check_sms" name="check_sms" />
+							<input type="checkbox" id="market_check_sms" name="member_check_sms" value="1" />
 						</td>
 						<td>
-							<input type="checkbox" id="market_check_phone" name="check_phone" />
+							<input type="checkbox" id="market_check_phone" name="member_check_phone" value="1" />
 						</td>
 					</tr>
 					</table>
@@ -262,6 +265,7 @@ $(document).ready(function() {
 	
 	// 테스트용
 	$('#input_test').click(function() {
+		/* 
 		console.log(
 				"completePw: " + completePw + "\n"
 				+ "completePwCfm: " + completePwCfm + "\n"
@@ -272,7 +276,17 @@ $(document).ready(function() {
 				+ "completeEmailDomain: " + completeEmailDomain + "\n"
 				+ "completePhoneC: " + completePhoneC + "\n"
 				+ "completePhoneR: " + completePhoneR + "\n"
-				)
+				);
+		*/
+		/* 
+		console.log("market_check_email-prop: " + $('#market_check_email').prop('checked') + "\n"
+				+ "market_check_sms-prop: " + $('#market_check_sms').prop('checked') + "\n"
+				+ "market_check_phone-prop: " + $('#market_check_phone').prop('checked') + "\n"
+				+ "market_check_email-val: " + $('#market_check_email').val() + "\n"
+				+ "market_check_sms-val: " + $('#market_check_sms').val() + "\n"
+				+ "market_check_phone-val: " + $('#market_check_phone').val());
+		*/
+		
 	});
 	
 	/************************/
@@ -314,12 +328,6 @@ $(document).ready(function() {
 		$('#member_birthday').val(birthday);
 	}
 	
-	// 검사 완료된 회원정보 저장
-	var cfmId = "";
-	var cfmPw = "";
-	var cfmNick = "";
-	var cfmName = "";
-	
 	// 검사 완료 유무 저장
 	var completePw = false;
 	var completePwCfm = false;
@@ -337,9 +345,60 @@ $(document).ready(function() {
 	/*		실시간 유효값 검사		*/
 	
 	// 비밀번호 검사
-	$('#member_pw').keyup(function() {
+	$('#member_pw').keyup(checkPw).mouseout(checkPw).focus(checkPw);
+		
+	function checkPw() {
+		
+		var inputId = $('#member_id').val();
 		var inputPw = $(this).val();
-		var regex = getRegex("strEngNumSpe");
+		
+		var strId = "";
+		var strPw = "";
+		for ( var i = 0; i < inputId.length-3; i++ ) {
+			strId = inputId.substr(i, 4);
+			
+			for ( var j = 0; j < inputPw.length-3; j++ ) {
+				strPw = inputPw.substr(j, 4);
+				
+				if ( strId == strPw ) {
+					$('#text_guide_pw').text("아이디와 동일한 글자 4개 이상 사용불가");
+					$('#text_guide_pw').show();
+					completePw = false;
+					
+					return true;
+				}
+			}
+		}
+		
+		// 동일한 문자 4개 이상 반복 확인
+		if ( inputPw.length >= 4 ) {
+			
+			for ( var i = 0; i < inputPw.length-3; i++ ) {
+				var sameCnt = 0;
+				
+				for ( var j = i; inputPw.length; j++ ) {
+					if ( inputPw.charAt(i) == inputPw.charAt(j) ) {
+						sameCnt++;
+					} else {
+						break;
+					}
+					
+					if ( sameCnt >= 4 ) {
+						$('#text_guide_pw').text("동일한 글자 4개 이상 사용불가");
+						$('#text_guide_pw').show();
+						completePw = false;
+						
+						return true;
+					}
+				}
+			}
+		}
+		
+		var regexEngL = getRegex("regexEngL");
+		var regexEngU = getRegex("regexEngU");
+		var regexNum = getRegex("regexNum");
+		var regexSpe = getRegex("regexSpe");
+		var regexNotEngNumSpe = getRegex("regexNotEngNumSpe");
 		
 		// 공백 확인
 		if ( inputPw == '' ) {
@@ -354,17 +413,26 @@ $(document).ready(function() {
 			completePw = false;
 		
 		// 문자 확인
-		} else if ( regex.test(inputPw) ) {
+		} else if ( regexNotEngNumSpe.test(inputPw)) {
 			$('#text_guide_pw').text("올바르게 입력해주세요.");
 			$('#text_guide_pw').show();
 			completePw = false;
+		
+		// 정상 입력
+		} else if ( regexEngL.test(inputPw) 
+				&& regexEngU.test(inputPw)
+				&& regexNum.test(inputPw)
+				&& regexSpe.test(inputPw)) {
+			
+			$('#text_guide_pw').hide();
+			completePw = true;
 			
 		} else {
-			$('#text_guide_pw').hide();
-			cfmPw = inputPw;
-			completePw = true;
+			$('#text_guide_pw').text("올바르게 입력해주세요.");
+			$('#text_guide_pw').show();
+			completePw = false;
 		}
-	});
+	}	
 	
 	// 비밀번호 확인 검사
 	$('#member_pw').blur(checkPwCfm);
@@ -394,21 +462,23 @@ $(document).ready(function() {
 	function checkNick() {
 		var inputNick = $(this).val();
 		var nickLeng = inputNick.length;
-		var strKor = /[ㄱ-힣]/;
-		var strEngNum = /[a-z0-9]/i;
-		var strSpace = /[\s]/;
+		var nickByte = 0;
+		var str = "";
+		
 		nickKorLeng = 0;
 		nickEngNumLeng = 0;
 		nickETCLeng = 0;
-		var nickByte = 0;
-		var str = "";
+		
+		var regexKor = getRegex("regexKor");
+		var regexEngNum = getRegex("regexEngNum");
+		var regexSpace = getRegex("regexSpace");
 		
 		for ( var i = 0; i < nickLeng; i++ ) {
 			var text = inputNick.charAt(i);
 			
-			if ( strKor.test(text) ) {
+			if ( regexKor.test(text) ) {
 				nickKorLeng = nickKorLeng + 2;
-			} else if ( strEngNum.test(text) || strSpace.test(text) ) {
+			} else if ( regexEngNum.test(text) || regexSpace.test(text) ) {
 				nickEngNumLeng = nickEngNumLeng + 1;
 			} else {
 				nickETCLeng = nickETCLeng + 2;
@@ -441,38 +511,37 @@ $(document).ready(function() {
 			$('#text_guide_nick').hide();
 			
 			if ( str != '' ) {
-				cfmNick = str;
 				completeNick = true;
 			}
 		}
 	}
 	
 	// 이름 검사
-	$('#member_name').keyup(function() {
+	$('#member_name').keyup(checkName).mouseout(checkName);
+	
+	function checkName() {
 		var inputName = $(this).val();
 		var firstText = inputName.charAt(0);
 		
-		console.log("firstText: " + firstText);
-		
-		var strKor = /[ㄱ-힣]/;
-		var strEng = /[a-z\s]/i;
-		var strSpace = /\s/;
-		var strKorEng = /[ㄱ-힣a-z\s]/i;
-		var strNotKorEng = /[^ㄱ-힣a-z\s]/i;
+		var regexKor = getRegex("regexKor");
+		var regexEngLU = getRegex("regexEngLU");
+		var regexSpace = getRegex("regexSpace");
+		var regexKorEng = getRegex("regexKorEng");
+		var regexNotKorEng = getRegex("regexNotKorEng");
 		
 		var str = "";
 		// 첫 글자가 띄어쓰기일 경우
-		if ( strSpace.test(firstText) ) {
+		if ( regexSpace.test(firstText) ) {
 			
 			$('#text_guide_name').text("첫 글자에 띄어쓰기를 사용할 수 없습니다.");
 			$('#text_guide_name').show();
 			completeName = false;
 		
 		// 첫 글자가 한글일 경우 -> 영문 포함 불가 ※ 한글은 띄어쓰기 포함 불가
-		} else if ( strKor.test(firstText) ) {
+		} else if ( regexKor.test(firstText) ) {
 			for ( var i = 0; i < inputName.length; i++ ) {
 				
-				if ( !strKor.test(inputName.charAt(i)) ) {
+				if ( !regexKor.test(inputName.charAt(i)) ) {
 					$('#text_guide_name').text("첫 글자가 한글일 경우 한글만 입력 가능합니다.");
 					$('#text_guide_name').show();
 					completeName = false;
@@ -480,16 +549,15 @@ $(document).ready(function() {
 					return false;
 				} else {
 					$('#text_guide_name').hide();
-					cfmName = inputName;
 					completeName = true;
 				}
 			}
 			
 		// 첫 글자가 영문일 경우 -> 한글 포함 불가 ※ 영문은 띄어쓰기 포함 가능
-		} else if ( strEng.test(firstText) ) {
+		} else if ( regexEngLU.test(firstText) ) {
 			for ( var i = 0; i < inputName.length; i++ ) {
 				
-				if ( !strEng.test(inputName.charAt(i)) ) {
+				if ( !regexEngLU.test(inputName.charAt(i)) && !regexSpace.test(inputName.charAt(i)) ) {
 					$('#text_guide_name').text("첫 글자가 영문일 경우 영문만 입력 가능합니다.");
 					$('#text_guide_name').show();
 					completeName = false;
@@ -497,7 +565,6 @@ $(document).ready(function() {
 					return false;
 				} else {
 					$('#text_guide_name').hide();
-					cfmName = inputName;
 					completeName = true;
 				}
 			}
@@ -507,13 +574,13 @@ $(document).ready(function() {
 			completeName = false;
 			
 		// 한글/영문, 띄어쓰기가 아닌 문자가 포함될 경우	
-		} else if ( strNotKorEng.test(inputName) ) {
+		} else if ( regexNotKorEng.test(inputName) ) {
 			
 			$('#text_guide_name').text("한글/영문 외에는 사용할 수 없습니다.");
 			$('#text_guide_name').show();
 			completeName = false;
 		}
-	});
+	}
 	
 	// 생년월일 중 '연도 or 월'이 변경 되었을 때 '일'의 리스트를 다시 설정
 	$("#birthday_year, #birthday_month").change(function() {
@@ -531,7 +598,7 @@ $(document).ready(function() {
 		var addRoad = $('#address_road').val();
 		var addJibun = $('#address_jibun').val();
 		
-		var regexAddr = getRegex("strAddrSpe");
+		var regexAddr = getRegex("regexAddr");
 		if ( !regexAddr.test(addJibun) ) {
 			$('#text_guide_addr').text("일부 특수문자만 사용 가능합니다. ※ ( ) -");
 			$('#text_guide_addr').show();
@@ -545,6 +612,7 @@ $(document).ready(function() {
 	}
 	
 	/*		마케팅 수신 동의 체크		*/
+	
 	$('#market_check_all').click(function() {
 		// 모두 동의가 '체크'되면 -> 나머지 체크 항목 모두 체크
 		if ( $(this).prop('checked') ) {
@@ -569,6 +637,7 @@ $(document).ready(function() {
 		if ( checkEmail && checkSMS && checkPhone )	$('#market_check_all').prop('checked', true);
 		else										$('#market_check_all').prop('checked', false);
 	});
+	
 	/*	 // 마케팅 수신 동의 체크		*/
 	
 	/*		이메일 검사		*/
@@ -581,9 +650,11 @@ $(document).ready(function() {
 		else							$('#email_domain').val(selectDomain);
 	});
 	
-	$('#email_id').keyup(function() {
+	$('#email_id').keyup(checkEmailId).mouseout(checkEmailId);
+	
+	function checkEmailId() {
 		var emailId = $(this).val();
-		regexEmail = getRegex("strEmailSpe");
+		var regexEmail = getRegex("regexEmail");
 		
 		if ( regexEmail.test(emailId) ) {
 			$('#text_guide_email').text("이메일 아이디를 다시 확인해주세요.");
@@ -595,11 +666,13 @@ $(document).ready(function() {
 			$('#text_guide_email').hide();
 			completeEmailId = true;
 		}
-	});
+	}
 	
-	$('#email_domain').keyup(function() {
+	$('#email_domain').keyup(checkEmailDomain).mouseout(checkEmailDomain);
+	
+	function checkEmailDomain() {
 		var emailDomain = $(this).val();
-		regexEmail = getRegex("strEmailSpe");
+		regexEmail = getRegex("regexEmail");
 		
 		if ( regexEmail.test(emailDomain) ) {
 			$('#text_guide_email').text("도메인을 다시 확인해주세요.");
@@ -610,30 +683,18 @@ $(document).ready(function() {
 			$('#text_guide_email').hide();
 			completeEmailDomain = true;
 		}
-	});
-	
-	$('#email_id, #email_domain').blur(function() {
-		var emailId = $('#email_id').val();
-		var emailDomain = $('#email_domain').val();
-		
-		if ( emailId != '' && emailDomain != '' ) {
-			$('#text_guide_email').hide();
-			completeEmailDomain = true;
-		}
-		
-		if ( completeEmailId && completeEmailDomain ) {
-			$('#member_email').val(emailId + "@" + emailDomain);
-		}
-	});
+	}
 	
 	/*	 // 이메일 검사		*/
 	
 	// 휴대전화 검사
-	$('#phone_center').keyup(function() {
+	$('#phone_center').keyup(checkPhoneC).mouseout(checkPhoneC);
+	
+	function checkPhoneC() {
 		var inputPhoneC = $(this).val();
-		var regexPhone = getRegex("strNum");
+		var regexNotNum = getRegex("regexNotNum");
 		
-		if ( regexPhone.test(inputPhoneC) ) {
+		if ( regexNotNum.test(inputPhoneC) ) {
 			$('#text_guide_phone').text("숫자 외 사용 할 수 없습니다.");
 			$('#text_guide_phone').show();
 			completePhoneC = false;
@@ -642,13 +703,15 @@ $(document).ready(function() {
 			$('#text_guide_phone').hide();
 			completePhoneC = true;
 		}
-	});
+	}
 	
-	$('#phone_right').keyup(function() {
+	$('#phone_right').keyup(checkPhoneR).mouseout(checkPhoneR);
+	
+	function checkPhoneR() {
 		var inputPhoneR = $(this).val();
-		var regexPhone = getRegex("strNum");
+		var regexNotNum = getRegex("regexNotNum");
 		
-		if ( regexPhone.test(inputPhoneR) ) {
+		if ( regexNotNum.test(inputPhoneR) ) {
 			$('#text_guide_phone').text("숫자 외 사용 할 수 없습니다.");
 			$('#text_guide_phone').show();
 			completePhoneR = false;
@@ -657,9 +720,11 @@ $(document).ready(function() {
 			$('#text_guide_phone').hide();
 			completePhoneR = true;
 		}
-	});
+	}
 	
-	$('#phone_center, #phone_right').blur(function() {
+	$('#phone_center, #phone_right').blur(checkPhone).mouseout(checkPhone);
+	
+	function checkPhone() {
 		if ( completePhoneC && completePhoneR ) {
 			var phoneLeft = $('#phone_left').val();
 			var phoneCenter = $('#phone_center').val();
@@ -667,46 +732,65 @@ $(document).ready(function() {
 			
 			$('#member_phone').val(phoneLeft + "-" + phoneCenter + "-" + phoneRight);
 		}
-	});
+	}
 	
 	/*	 // 실시간 유효값 검사		*/
 
 	/************************/
 	/*		아이디 중복 체크		*/
 	
-	var cfmId = "";
+	var cfmId = "";		// 중복 체크 완료된 아이디 저장
 	$('#id_cfm').click(function() {
 		
 		var inputId = $('#member_id').val();
-		var resultId = checkValue("id", inputId);
+		var regexEngLU = getRegex("regexEngLU");
+		var regexNum = getRegex("regexNum");
+		var regexNotEngNum = getRegex("regexNotEngNum");
 		
-		if ( !resultId ) {
-			$('#member_id').val('').focus();
+		console.log("regexEngLU.test(inputId): " + regexEngLU.test(inputId) + "\n"
+				+ "regexNum.test(inputId): " + regexNum.test(inputId) + "\n"
+				+ "regexNotEngNum.test(inputId): " + regexNotEngNum.test(inputId));
+		
+		if ( inputId.length < 6 ) {
+			alert("최소 6글자 이상 입력해주세요.");
 			return false;
 		}
-		
-		$.ajax({
-			url: "sameCheckId.do",
-			type: "POST",
-			data: { "member_id" : inputId },
-			success: function(result) {
-				
-				if ( result.message == "true" )	{
-					$('#system_alert').attr('class', 'alert alert-dismissible alert-danger');
-					$('#system_alert').html('<strong>이미 존재하는 아이디입니다!</strong>');
-				} else {
-					$('#system_alert').attr('class', 'alert alert-dismissible alert-success');
-					$('#system_alert').html('<strong>사용 가능한 아이디입니다.</strong>');
-					cfmId = inputId;
+		else if ( !regexEngLU.test(inputId) || !regexNum.test(inputId) || regexNotEngNum.test(inputId) ) {
+			alert("사용 할 수 없는 아이디입니다.");
+			return false;
+			
+		} else if ( regexEngLU.test(inputId) && regexNum.test(inputId) && !regexNotEngNum.test(inputId) ) {
+			
+			$('#id_cfm').text("체크중...").attr('disabled', true);
+			
+			$.ajax({
+				url: "sameCheckId.do",
+				type: "POST",
+				data: { "member_id" : inputId },
+				success: function(result) {
+					
+					if ( result.message == "true" )	{
+						$('#system_alert').attr('class', 'alert alert-dismissible alert-danger');
+						$('#system_alert').html('<strong>이미 존재하는 아이디입니다!</strong>');
+						cfmId = '';
+						
+					} else {
+						$('#system_alert').attr('class', 'alert alert-dismissible alert-success');
+						$('#system_alert').html('<strong>사용 가능한 아이디입니다.</strong>');
+						cfmId = inputId;
+					}
+					
+					$('#system_alert').slideDown('fast', function() {
+						setTimeout(function() { $('#system_alert').slideUp('fast'); }, 1000);
+					});
+					
+					$('#id_cfm').text("중복 체크").attr('disabled', false);
+				},
+				error: function(result) {
+					alert("잠시 후 다시 이용해주세요.");
 				}
-				$('#system_alert').slideDown('fast', function() {
-					setTimeout(function() { $('#system_alert').slideUp('fast'); }, 1000);
-				});
-			},
-			error: function(result) {
-				alert("잠시 후 다시 이용해주세요.");
-			}
-		});
+			});
+		}
 	});
 	
 	/* 	  // 아이디 중복 체크 		*/
@@ -729,6 +813,7 @@ $(document).ready(function() {
 		}
 		
 		// 주소 검사
+		checkAddr();
 		var inputPostcode = $('#address_postcode').val();
 		var inputRoad = $('#address_road').val();
 		
@@ -742,32 +827,53 @@ $(document).ready(function() {
 			return false;
 		}
 		
+		// 이메일 조합
+		var emailId = $('#email_id').val();
+		var emailDomain = $('#email_domain').val();
+		
+		if ( completeEmailId && completeEmailDomain ) {
+			$('#member_email').val(emailId + "@" + emailDomain);
+		}
+		
 		// 최종 검사
-		if ( !completePw ) {
+		if ( cfmId == '' ) {
+			alert("아이디를 다시 확인해주세요.");
+			$('#member_id').focus();
+			return false;
+		} else if ( !completePw ) {
+			alert("비밀번호를 다시 확인해주세요.");
 			$('#member_pw').focus();
 			return false;
 		} else if ( !completePwCfm ) {
+			alert("비밀번호 확인을 다시 확인해주세요.");
 			$('#member_pw_confirm').focus();
 			return false;
 		} else if ( !completeNick ) {
+			alert("닉네임을 다시 확인해주세요.");
 			$('#member_nickname').focus();
 			return false;
 		} else if ( !completeName ) {
+			alert("이름을 다시 확인해주세요.");
 			$('#member_name').focus();
 			return false;
 		} else if ( !completeAddr ) {
+			alert("주소를 다시 확인해주세요.");
 			$('#address_jibun').focus();
 			return false;
 		} else if ( !completeEmailId ) {
+			alert("이메일 아이디를 다시 확인해주세요.");
 			$('#email_id').focus();
 			return false;
 		} else if ( !completeEmailDomain ) {
+			alert("이메일 도메인을 다시 확인해주세요.");
 			$('#email_domain').focus();
 			return false;
 		} else if ( !completePhoneC ) {
+			alert("휴대전화를 다시 확인해주세요.");
 			$('#phone_center').focus();
 			return false;
 		} else if ( !completePhoneR ) {
+			alert("휴대전화를 다시 확인해주세요.");
 			$('#phone_right').focus();
 			return false;
 		}
@@ -872,154 +978,43 @@ function sample4_execDaumPostcode() {
 /*	  // 다음 주소 API		*/
 
 /********************/
-/*		유효값 체크		*/
-function checkValue(type, text) {
-	// 아래 문자열에 해당되지 않은 문자만 가능 ※ 일부 제외
-	var strKor = /[^ㄱ-힣]/;
-	var strEng = /[^a-z]/i;
-	var strNum = /[^0-9]/;
-	var strSpe = /[^\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
-	var strKorEng = /[^ㄱ-힣a-z]/i;
-	var strEngNum = /[^a-z0-9]/i;
-	var strAddrSpe = /[ㄱ-힣a-z0-9\(\)\-]/i;		// 회원-주소 전용
-	var strEmailSpe = /[^ㄱ-힣a-z0-9.\-_]/i;		// 회원-이메일 전용
-	var strKorEngNum = /[^ㄱ-힣a-z0-9]/i;
-	var strEngNumSpe = /[^a-z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/i;
-	
-	var regex = "";
-	
-	// 아이디 검사
-	if ( type == "id" ) {
-		// 공백 확인
-		if ( text.trim() == '' ) {
-			alert("아이디를 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 글자수 확인
-		if ( text.length < 6 ) {
-			alert("최소 6글자 이상 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 문자 확인
-		regex = strEngNum;
-		if ( regex.test(text) ) {
-			alert("올바르게 입력해주세요.");
-			
-			return false;
-		}
-
-	// 비밀번호 검사	
-	}  else if ( type == "pw" ) {
-		// 공백 확인
-		if ( text.trim() == '' ) {
-			alert("비밀번호를 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 글자수 확인
-		if ( text.length < 8 ) {
-			alert("최소 8글자 이상 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 문자 확인
-		regex = strEngNumSpe;
-		if ( regex.test(text) ) {
-			alert("올바르게 입력해주세요.");
-			
-			return false;
-		}
-	
-	// 닉네임 검사	
-	} else if ( type == "nickname" ) {
-		// 공백 확인
-		if ( text.trim() == '' ) {
-			alert("닉네임을 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 문자 확인
-		regex = strKorEngNum;
-		if ( regex.test(text) ) {
-			alert("올바르게 입력해주세요.");
-			
-			return false;
-		}
-		
-	// 주소 검사		
-	} else if ( type == "jibun" ) {
-		// 문자 확인
-		regex = strAddrSpe;
-		if ( !regex.test(text) ) {
-			alert("일부 특수문자만 사용 가능합니다. ※ ( ) -");
-			
-			return false;
-		}
-		
-	// 이메일 검사	
-	} else if ( type == "email" ) {
-		// 공백 확인
-		if ( text.trim() == '' ) {
-			alert("이메일을 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 문자 확인
-		regex = strEmailSpe;
-		if ( !regex.test(text) ) {
-			alert("사용 할 수 없는 이메일입니다.");
-			
-			return false;
-		}
-		
-	// 휴대전화 검사	
-	} else if ( type == "phone" ) {
-		// 공백 확인
-		if ( text.trim() == '' ) {
-			alert("휴대전화를 입력해주세요.");
-			
-			return false;
-		}
-		
-		// 문자 확인
-		regex = strNum;
-		if ( regex.test(text) ) {
-			alert("숫자만 사용 할 수 있습니다.");
-			
-			return false;
-		}
-	}
-	
-	return true;
-}
-
-/*	 // 유효값 체크		*/
-
 /*		정규식 반환		*/
 function getRegex(type) {
-	var strKor = /[^ㄱ-힣]/;
-	var strEng = /[^a-z]/i;
-	var strNum = /[^0-9]/;
-	var strSpe = /[^\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
-	var strKorEng = /[^ㄱ-힣a-z]/i;
-	var strEngNum = /[^a-z0-9]/i;
-	var strAddrSpe = /[ㄱ-힣a-z0-9\(\)\-]/i;		// 회원-주소 전용
-	var strEmailSpe = /[^ㄱ-힣a-z0-9.\-_]/i;		// 회원-이메일 전용
-	var strKorEngNum = /[^ㄱ-힣a-z0-9]/i;
-	var strEngNumSpe = /[^a-z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/i;
+	var regexKor = /[ㄱ-힣]/;
+	var regexEngL = /[a-z]/;
+	var regexEngU = /[A-Z]/;
+	var regexEngLU = /[a-z]/i;
+	var regexNum = /[0-9]/;
+	var regexSpe = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
+	var regexSpace = /[\s]/;
+	var regexKorEng = /[ㄱ-힣a-z]/i;
+	var regexEngNum = /[a-z0-9]/i;
+	var regexKorEngNum = /[ㄱ-힣a-z0-9]/i;
+	var regexEngNumSpe = /[a-z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/i;
+	var regexNotNum = /[^0-9]/;
+	var regexNotKorEng = /[^ㄱ-힣a-z]/i;
+	var regexNotEngNum = /[^a-z0-9]/i;
+	var regexNotEngNumSpe = /[^a-z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/i;
+	var regexAddr = /[ㄱ-힣a-z0-9\(\)\-]/i;		// 회원-주소 전용
+	var regexEmail = /[^ㄱ-힣a-z0-9.\-_]/i;		// 회원-이메일 전용
 	
-	if ( type == "strEngNumSpe" )		return strEngNumSpe;
-	else if ( type == "strAddrSpe" )	return strAddrSpe;
-	else if ( type == "strEmailSpe" )	return strEmailSpe;
-	else if ( type == "strNum" )		return strNum;
+	if ( type == "regexKor" )				return regexKor;
+	else if ( type == "regexEngL" )			return regexEngL;
+	else if ( type == "regexEngU" )			return regexEngU;
+	else if ( type == "regexEngLU" )		return regexEngLU;
+	else if ( type == "regexNum" )			return regexNum;
+	else if ( type == "regexSpe" )			return regexSpe;
+	else if ( type == "regexSpace" )		return regexSpace;
+	else if ( type == "regexKorEng" )		return regexKorEng;
+	else if ( type == "regexEngNum" )		return regexEngNum;
+	else if ( type == "regexKorEngNum" )	return regexKorEngNum;
+	else if ( type == "regexEngNumSpe" )	return regexEngNumSpe;
+	else if ( type == "regexNotNum" )		return regexNotNum;
+	else if ( type == "regexNotKorEng" )	return regexNotKorEng;
+	else if ( type == "regexNotEngNum" )	return regexNotEngNum;
+	else if ( type == "regexNotEngNumSpe" )	return regexNotEngNumSpe;
+	else if ( type == "regexAddr" )			return regexAddr;
+	else if ( type == "regexEmail" )		return regexEmail;
 }
 /*	 // 정규식 반환		*/
 

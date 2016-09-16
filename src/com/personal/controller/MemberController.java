@@ -25,6 +25,7 @@ public class MemberController {
 	public ResultMessage joinAction(MemberDTO member) {
 		
 		logger.info("joinAction.do 접근");
+		logger.info("member: " + member.toString());
 		
 		ResultMessage resultMsg = null;
 		
