@@ -27,4 +27,10 @@
 	WHERE MEMBER_ID=#{member_id}
 </select>
 
+<select id="selectMember" parameterType="com.personal.model.MemberDTO" resultType="Integer">
+	SELECT NVL(COUNT(*), 0) FROM PP1_MEMBER
+	WHERE MEMBER_ID=#{member_id}
+	AND MEMBER_PW=#{member_pw}
+</select>
+
 </mapper>

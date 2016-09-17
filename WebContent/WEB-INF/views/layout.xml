@@ -8,16 +8,13 @@
 	<definition name="main.tiles" template="/WEB-INF/views/main/main.jsp"></definition>
 	<definition name="login.tiles" template="/WEB-INF/views/main/login.jsp"></definition>
 	<definition name="join.tiles" template="/WEB-INF/views/main/join.jsp"></definition>
-	<!-- <definition name="regi.tiles" template="/WEB-INF/views/regi/regi.jsp"></definition> -->
-	<!-- 
-	<definition name="board_list.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+	<definition name="board_list.tiles" template="/WEB-INF/views/layout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
-		<put-attribute name="top_inc" value="/WEB-INF/views/common/top.jsp"/>
-		<put-attribute name="left_main" value="/WEB-INF/views/common/left_board_list.jsp"/>
-		<put-attribute name="main" value="/WEB-INF/views/board/board_list.jsp"/>
-		<put-attribute name="bottom_inc" value="/WEB-INF/views/common/bottom.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/common/nav.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/common/aside.jsp"/>
+		<put-attribute name="section" value="/WEB-INF/views/board/board_list.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
 	</definition>
-	-->
 	<!-- 
 	<definition name="board_write.tiles" extends="board_list.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/board/board_write.jsp"/>

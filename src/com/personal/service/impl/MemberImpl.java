@@ -22,4 +22,9 @@ public class MemberImpl implements MemberService{
 	public int sameCheckId(MemberDTO member) throws Exception {
 		return memberDAO.sameCheckId(member);
 	}
+
+	@Override
+	public int selectMember(MemberDTO member) throws Exception {
+		return memberDAO.selectMember(member);
+	}
 }

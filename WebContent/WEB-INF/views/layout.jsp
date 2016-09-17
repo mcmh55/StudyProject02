@@ -12,7 +12,7 @@
 <html lang="ko">
 <head>
 
-<tiles:insertAttribute name="head"/>
+<%-- <tiles:insertAttribute name="head"/> --%>
 
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/bootswatch.css"/>
