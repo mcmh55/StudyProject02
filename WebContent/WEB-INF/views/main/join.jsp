@@ -183,7 +183,7 @@ aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 			</tr>
 			
 			<tr>
-				<th>Email</th>
+				<th>이메일</th>
 				<td style="vertical-align: top;">
 					<input type="text" id="email_id" class="form-control" size="10" maxlength="64" />
 					&nbsp;@&nbsp;
@@ -200,7 +200,7 @@ aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
 			</tr>
 			
 			<tr>
-				<th>Phone</th>
+				<th>휴대전화</th>
 				<td>
 					<select class="form-control">
 						<option id="phone_left" selected="selected">010</option>
@@ -680,6 +680,7 @@ $(document).ready(function() {
 	}
 	
 	$('#email_domain').keyup(checkEmailDomain).blur(checkEmailDomain);
+	$('#email_domain_list').blur(checkEmailDomain);
 	
 	function checkEmailDomain() {
 		var emailDomain = $(this).val();
@@ -913,11 +914,16 @@ $(document).ready(function() {
 			data: $('#frm_join').serialize(),
 			success: function(result) {
 				alert("정상적으로 등록되었습니다.");
-				$('#btn_modal_x').click();
+				
+				if ( result.message == "Success" ) {
+					$('#btn_modal_x').click();
+				}
+				
 				document.location = document.location;
 			},
 			error: function(result) {
 				alert("잠시 후 다시 이용해주세요.");
+				document.location = document.location;
 			}
 		});
 		/*	  // DB 저장		*/

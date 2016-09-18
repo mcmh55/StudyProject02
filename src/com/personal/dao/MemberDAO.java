@@ -23,7 +23,11 @@ public class MemberDAO {
 		return sqlSession.selectOne(ns + "sameCheckId", member);
 	}
 	
-	public int selectMember(MemberDTO member) throws Exception {
-		return sqlSession.selectOne(ns + "selectMember", member);
+	public MemberDTO selectMemberLogin(MemberDTO member) throws Exception {
+		return sqlSession.selectOne(ns + "selectMemberLogin", member);
+	}
+	
+	public MemberDTO selectMemberActive(MemberDTO member) throws Exception {
+		return sqlSession.selectOne(ns + "selectMemberActive", member);
 	}
 }

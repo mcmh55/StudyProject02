@@ -345,5 +345,12 @@
 		<version>2.7.3</version>
 	</dependency>
 
+	<!-- java mail -->
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<version>1.4</version>
+	</dependency>
+
 	</dependencies>		<!-- // 직접 추가 -->
 </project>

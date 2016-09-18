@@ -11,14 +11,14 @@
 		MEMBER_IDX, MEMBER_ID, MEMBER_PW, MEMBER_NICKNAME
 		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
 		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
-		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_AUTH
+		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
 	)
 	VALUES
 	(
 		PP1_MEMBER_SEQ.NEXTVAL, #{member_id}, #{member_pw}, #{member_nickname}
 		, #{member_name}, #{member_sex}, #{member_birthday}, #{member_address}
 		, #{member_check_email}, #{member_check_sms}, #{member_check_phone}
-		, #{member_email}, #{member_phone}, 0
+		, #{member_email}, #{member_phone}, 0, 0
 	)
 </insert>
 
@@ -27,10 +27,23 @@
 	WHERE MEMBER_ID=#{member_id}
 </select>
 
-<select id="selectMember" parameterType="com.personal.model.MemberDTO" resultType="Integer">
-	SELECT NVL(COUNT(*), 0) FROM PP1_MEMBER
+<select id="selectMemberLogin" parameterType="com.personal.model.MemberDTO" resultType="com.personal.model.MemberDTO">
+	SELECT MEMBER_IDX, MEMBER_ID, MEMBER_NICKNAME
+		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
+		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
+		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
+	FROM PP1_MEMBER
 	WHERE MEMBER_ID=#{member_id}
 	AND MEMBER_PW=#{member_pw}
+</select>
+
+<select id="selectMemberActive" parameterType="com.personal.model.MemberDTO" resultType="com.personal.model.MemberDTO">
+	SELECT MEMBER_IDX, MEMBER_ID, MEMBER_NICKNAME
+		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
+		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
+		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
+	FROM PP1_MEMBER
+	WHERE MEMBER_ID=#{member_id}
 </select>
 
 </mapper>

@@ -8,6 +8,7 @@
 	<definition name="main.tiles" template="/WEB-INF/views/main/main.jsp"></definition>
 	<definition name="login.tiles" template="/WEB-INF/views/main/login.jsp"></definition>
 	<definition name="join.tiles" template="/WEB-INF/views/main/join.jsp"></definition>
+	<definition name="member_active.tiles" template="/WEB-INF/views/main/member_active.jsp"></definition>
 	<definition name="board_list.tiles" template="/WEB-INF/views/layout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
 		<put-attribute name="nav" value="/WEB-INF/views/common/nav.jsp"/>

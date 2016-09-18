@@ -14,13 +14,14 @@ public class MemberDTO {
 	private int		member_check_phone;
 	private String	member_email;
 	private String	member_phone;
+	private int		member_active;
 	private int		member_auth;
 	
 	public MemberDTO() {}
 
 	public MemberDTO(String member_id, String member_pw, String member_nickname, String member_name, int member_sex,
 			String member_birthday, String member_address, int member_check_email, int member_check_sms,
-			int member_check_phone, String member_email, String member_phone, int member_auth) {
+			int member_check_phone, String member_email, String member_phone, int member_active, int member_auth) {
 		super();
 		this.member_id = member_id;
 		this.member_pw = member_pw;
@@ -34,6 +35,7 @@ public class MemberDTO {
 		this.member_check_phone = member_check_phone;
 		this.member_email = member_email;
 		this.member_phone = member_phone;
+		this.member_active = member_active;
 		this.member_auth = member_auth;
 	}
 
@@ -43,8 +45,8 @@ public class MemberDTO {
 				+ ", member_name=" + member_name + ", member_sex=" + member_sex + ", member_birthday=" + member_birthday
 				+ ", member_address=" + member_address + ", member_check_email=" + member_check_email
 				+ ", member_check_sms=" + member_check_sms + ", member_check_phone=" + member_check_phone
-				+ ", member_email=" + member_email + ", member_phone=" + member_phone + ", member_auth=" + member_auth
-				+ "]";
+				+ ", member_email=" + member_email + ", member_phone=" + member_phone + ", member_active="
+				+ member_active + ", member_auth=" + member_auth + "]";
 	}
 
 	public String getMember_id() {
@@ -141,6 +143,14 @@ public class MemberDTO {
 
 	public void setMember_phone(String member_phone) {
 		this.member_phone = member_phone;
+	}
+
+	public int getMember_active() {
+		return member_active;
+	}
+
+	public void setMember_active(int member_active) {
+		this.member_active = member_active;
 	}
 
 	public int getMember_auth() {
