@@ -21,12 +21,6 @@
 </head>
 <body>
 
-<c:if test="${ !empty loginMsg }">
-	<script type="text/javascript">
-		alert("아이디 또는 비밀번호를 다시 확인해주세요.");
-	</script>
-</c:if>
-
 <div class="login_background">
 <div class="login_wrap" align="center">
 <div class="login_box">
@@ -110,13 +104,15 @@ $('#btn_login').click( function() {
 		data: params,
 		success: function(result) {
 			
-			if ( result.message == "1" )	{
-				location.href = "board_list.do";
-				
-			} else if ( result.message == "0" ) {
-				
+			if ( result.message == "0" )	{
 				$('#login_modal').css('margin-top', ($(window).height() / 2) - 100);
 				$('#btn_login_modal').click();
+				
+			} else if ( result.message == "1" ) {
+				location.href = "member_active.do";
+				
+			} else if ( result.message == "2" ) {
+				location.href = "board_list.do";
 				
 			} else {
 				alert("잠시 후 다시 시도해주세요.");

@@ -1,5 +1,9 @@
 package com.personal.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +42,28 @@ public class MainController {
 	
 	@RequestMapping(value="loginAction.do", method=RequestMethod.POST)
 	@ResponseBody
-	public ResultMessage loginAction(MemberDTO member) {
+	public ResultMessage loginAction(MemberDTO member, HttpServletRequest request, HttpServletResponse response) {
 		
 		logger.info("loginAction.do 접근 ");
 		logger.info("member: " + member.toString());
 		
+		MemberDTO searchMember = new MemberDTO();
 		ResultMessage resultMsg = null;
 		
 		try {
-			int isMember = memberService.selectMember(member);
+			searchMember = memberService.selectMemberLogin(member);
 			
-			if ( isMember > 0 ) {
-				resultMsg = new ResultMessage("1");
+			if ( searchMember != null ) {
+				logger.info("searchMeber: " + searchMember.toString());
+				
+				request.getSession().setAttribute("loginMember", searchMember);
+				
+				if ( searchMember.getMember_active() > 0 ) {
+					resultMsg = new ResultMessage("2");		// 회원 인증된 유저
+				}
+				
+				resultMsg = new ResultMessage("1");			// 인증하지 않은 유저
+				
 			} else {
 				resultMsg = new ResultMessage("0");
 			}
@@ -60,6 +74,27 @@ public class MainController {
 		}
 		
 		return resultMsg;
+	}
+	
+	@RequestMapping(value="member_active.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String memberActive(HttpServletRequest request) throws Exception {
+		
+		logger.info("member_active.do 접근 ");
+		
+		Cookie[] cookies = request.getCookies();
+		String memberId = "";
+		
+		for ( int i = 0; i < cookies.length; i++ ) {
+			
+			if ( cookies[i].getName().equals("member_id") ) {
+				memberId = cookies[i].getValue();
+			}
+		}
+		
+		MemberDTO member = new MemberDTO();
+		member.setMember_id(memberId);
+		
+		return "member_active.tiles";
 	}
 	
 	@RequestMapping(value="join.do", method={RequestMethod.GET, RequestMethod.POST})
