@@ -31,10 +31,6 @@ public class EmailController {
 		
 		logger.info("emailSendAction.do 접근 ");
 		
-		String memberId = "";
-		
-		member.setMember_id(memberId);
-		
 		MemberDTO searchMember = new MemberDTO();
 		searchMember = memberService.selectMemberActive(member);
 		
@@ -42,7 +38,7 @@ public class EmailController {
         
         String reciver = searchMember.getMember_email();
         String subject = "회원 인증 이메일입니다.";
-        String content = "<a href='http://192.168.0.106:8080/PersonalProject01/login.do'>인증 페이지로 이동</a>";
+        String content = "<a href='http://211.201.221.169:8080/PersonalProject01/login.do'>인증 페이지로 이동</a>";
          
         email.setReciver(reciver);
         email.setSubject(subject);
