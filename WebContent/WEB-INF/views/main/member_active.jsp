@@ -48,11 +48,11 @@
 		</span>
 	</c:otherwise>
 	</c:choose>
-	<%-- 
+	
 	<form id="frm_email_send">
 		<input type="hidden" name="member_id" value="${ member.member_id }" />
 	</form>
-	--%>
+	
 </div>
 </div>
 </div>
@@ -67,7 +67,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: "emailSendAction.do",
 			type: "POST",
-			/* data: $('#frm_email_send').serialize(), */
+			data: $('#frm_email_send').serialize(),
 			success: function(result) {
 				$('#email_active_send').val("인증 이메일 재발송").attr('disabled', false);
 				alert("인증 이메일이 발송되었습니다.");
