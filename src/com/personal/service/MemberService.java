@@ -8,4 +8,5 @@ public interface MemberService {
 	int sameCheckId(MemberDTO member) throws Exception;
 	MemberDTO selectMemberLogin(MemberDTO member) throws Exception;
 	MemberDTO selectMemberActive(MemberDTO member) throws Exception;
+	void updateMemberActive(String memberId) throws Exception;
 }

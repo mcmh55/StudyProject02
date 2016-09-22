@@ -28,10 +28,7 @@
 </select>
 
 <select id="selectMemberLogin" parameterType="com.personal.model.MemberDTO" resultType="com.personal.model.MemberDTO">
-	SELECT MEMBER_IDX, MEMBER_ID, MEMBER_NICKNAME
-		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
-		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
-		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
+	SELECT MEMBER_ID, MEMBER_PW, MEMBER_ACTIVE, MEMBER_AUTH
 	FROM PP1_MEMBER
 	WHERE MEMBER_ID=#{member_id}
 	AND MEMBER_PW=#{member_pw}
@@ -45,5 +42,11 @@
 	FROM PP1_MEMBER
 	WHERE MEMBER_ID=#{member_id}
 </select>
+
+<update id="updateMemberActive" parameterType="String">
+	UPDATE PP1_MEMBER SET
+	MEMBER_ACTIVE=1
+	WHERE MEMBER_ID=#{memberId}
+</update>
 
 </mapper>

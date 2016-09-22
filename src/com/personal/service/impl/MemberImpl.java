@@ -32,4 +32,9 @@ public class MemberImpl implements MemberService{
 	public MemberDTO selectMemberActive(MemberDTO member) throws Exception {
 		return memberDAO.selectMemberActive(member);
 	}
+
+	@Override
+	public void updateMemberActive(String memberId) throws Exception {
+		memberDAO.updateMemberActive(memberId);
+	}
 }
