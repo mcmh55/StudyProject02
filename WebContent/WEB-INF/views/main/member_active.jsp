@@ -16,13 +16,26 @@
 </head>
 <body>
 
+<jsp:include page="/WEB-INF/views/common/checkLogin.jsp" />
+
 <div class="login_background">
 <div class="login_wrap" align="center">
 <div class="login_box">
-	
 	<c:set var="member" value="${ sessionScope.loginMember }"></c:set>
 	
 	<c:choose>
+	
+	<c:when test="${ active == 'true' }">
+		<div style="font-size: 12pt; font-weight: bold;">
+			회원 인증이 완료되었습니다.
+		</div>
+		<br/>
+		<span>
+			<input type="button" id="email_active_send" class="btn btn-primary" value="입장"
+			style="font-size: 12pt;" />
+		</span>
+	</c:when>
+	
 	<c:when test="${ member.member_active == 0 }">
 		<div style="font-size: 12pt; font-weight: bold;">
 			발송된 인증 이메일에서 링크를 클릭하여 회원 인증을 해주세요.
@@ -38,14 +51,7 @@
 	</c:when>
 	
 	<c:otherwise>
-		<div style="font-size: 12pt; font-weight: bold;">
-			회원 인증이 완료되었습니다.
-		</div>
-		<br/>
-		<span>
-			<input type="button" id="email_active_send" class="btn btn-primary" value="입장"
-			style="font-size: 12pt;" />
-		</span>
+		active: ${ active }
 	</c:otherwise>
 	</c:choose>
 	

@@ -1,6 +1,5 @@
 package com.personal.controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,7 +44,6 @@ public class MainController {
 	public ResultMessage loginAction(MemberDTO member, HttpServletRequest request, HttpServletResponse response) {
 		
 		logger.info("loginAction.do 접근 ");
-		logger.info("member: " + member.toString());
 		
 		MemberDTO searchMember = new MemberDTO();
 		ResultMessage resultMsg = null;
@@ -54,8 +52,6 @@ public class MainController {
 			searchMember = memberService.selectMemberLogin(member);
 			
 			if ( searchMember != null ) {
-				logger.info("searchMeber: " + searchMember.toString());
-				
 				request.getSession().setAttribute("loginMember", searchMember);
 				
 				if ( searchMember.getMember_active() > 0 ) {
@@ -74,27 +70,6 @@ public class MainController {
 		}
 		
 		return resultMsg;
-	}
-	
-	@RequestMapping(value="member_active.do", method={RequestMethod.GET, RequestMethod.POST})
-	public String memberActive(HttpServletRequest request) throws Exception {
-		
-		logger.info("member_active.do 접근 ");
-		
-		Cookie[] cookies = request.getCookies();
-		String memberId = "";
-		
-		for ( int i = 0; i < cookies.length; i++ ) {
-			
-			if ( cookies[i].getName().equals("member_id") ) {
-				memberId = cookies[i].getValue();
-			}
-		}
-		
-		MemberDTO member = new MemberDTO();
-		member.setMember_id(memberId);
-		
-		return "member_active.tiles";
 	}
 	
 	@RequestMapping(value="join.do", method={RequestMethod.GET, RequestMethod.POST})
