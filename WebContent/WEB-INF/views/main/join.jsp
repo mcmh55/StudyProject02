@@ -661,7 +661,8 @@ $(document).ready(function() {
 		else							$('#email_domain').val(selectDomain);
 	});
 	
-	$('#email_id').keyup(checkEmailId).blur(checkEmailId);
+	$('#email_id').keyup(checkEmailId);
+	$('#email_id').blur(checkEmailId);
 	
 	function checkEmailId() {
 		var emailId = $(this).val();
@@ -679,8 +680,9 @@ $(document).ready(function() {
 		}
 	}
 	
-	$('#email_domain').keyup(checkEmailDomain).blur(checkEmailDomain);
-	$('#email_domain_list').blur(checkEmailDomain);
+	$('#email_domain').keyup(checkEmailDomain);
+	$('#email_domain').blur(checkEmailDomain);
+	$('#email_domain_list').change(checkEmailDomain);
 	
 	function checkEmailDomain() {
 		var emailDomain = $(this).val();
@@ -700,7 +702,8 @@ $(document).ready(function() {
 	/*	 // 이메일 검사		*/
 	
 	// 휴대전화 검사
-	$('#phone_center').keyup(checkPhoneC).blur(checkPhoneC);
+	$('#phone_center').keyup(checkPhoneC);
+	$('#phone_center').blur(checkPhoneC);
 	
 	function checkPhoneC() {
 		var inputPhoneC = $(this).val();
@@ -722,7 +725,8 @@ $(document).ready(function() {
 		}
 	}
 	
-	$('#phone_right').keyup(checkPhoneR).blur(checkPhoneR);
+	$('#phone_right').keyup(checkPhoneR);
+	$('#phone_right').blur(checkPhoneR);
 	
 	function checkPhoneR() {
 		var inputPhoneR = $(this).val();
@@ -736,7 +740,7 @@ $(document).ready(function() {
 		} else if ( inputPhoneR.length < 4 ) {
 			$('#text_guide_phone').text("가운데는 최소 3자리 이상, 마지막은 4자리 입력 필요");
 			$('#text_guide_phone').show();
-			completePhoneC = false;
+			completePhoneR = false;
 			
 		} else {
 			$('#text_guide_phone').hide();
@@ -744,7 +748,7 @@ $(document).ready(function() {
 		}
 	}
 	
-	$('#phone_center, #phone_right').blur(checkPhone).blur(checkPhone);
+	$('#phone_center, #phone_right').blur(checkPhone);
 	
 	function checkPhone() {
 		if ( completePhoneC && completePhoneR ) {
@@ -757,7 +761,8 @@ $(document).ready(function() {
 	}
 	
 	// 자동가입방지 검사
-	$('#captcha_result').keyup(checkCaptcha).blur(checkCaptcha);
+	$('#captcha_result').keyup(checkCaptcha);
+	$('#captcha_result').blur(checkCaptcha);
 	
 	function checkCaptcha() {
 		var inputCaptcha = $('#captcha_result').val();
@@ -908,15 +913,19 @@ $(document).ready(function() {
 		
 		/********************/
 		/*		DB 저장		*/
+		
 		$.ajax({
 			url: "joinAction.do",
 			type: "POST",
 			data: $('#frm_join').serialize(),
 			success: function(result) {
-				alert("정상적으로 등록되었습니다.");
-				
 				if ( result.message == "Success" ) {
 					$('#btn_modal_x').click();
+					alert("회원가입이 완료되었습니다.");
+					
+				} else {
+					$('#btn_modal_x').click();
+					alert("회원가입에 실패하였습니다. 잠시 후 다시 이용해주세요.");
 				}
 				
 				document.location = document.location;
@@ -926,6 +935,7 @@ $(document).ready(function() {
 				document.location = document.location;
 			}
 		});
+		
 		/*	  // DB 저장		*/
 	});
 	
