@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,9 @@ public class MainController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping(value="main.do", method={RequestMethod.GET, RequestMethod.POST})
 	public String main() throws Exception {
@@ -49,9 +53,13 @@ public class MainController {
 		ResultMessage resultMsg = null;
 		
 		try {
+			// 입력한 비밀번호화 암호화된 비밀번호 비교
 			searchMember = memberService.selectMemberLogin(member);
 			
-			if ( searchMember != null ) {
+			boolean samePw = false;
+			samePw = passwordEncoder.matches(member.getMember_pw(), searchMember.getMember_pw());
+			
+			if ( searchMember != null && samePw ) {
 				request.getSession().setAttribute("loginMember", searchMember);
 				
 				if ( searchMember.getMember_active() > 0 ) {

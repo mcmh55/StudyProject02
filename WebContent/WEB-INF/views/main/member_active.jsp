@@ -42,7 +42,7 @@
 		</div>
 		<br/>
 		<span>
-			<input type="button" id="email_active_send" class="btn btn-primary" value="인증 이메일 재발송"
+			<input type="button" id="email_active_send" class="btn btn-primary" value="인증 이메일 발송"
 			style="font-size: 12pt;" />
 		</span>
 		<span>
@@ -75,7 +75,7 @@ $(document).ready(function() {
 			type: "POST",
 			data: $('#frm_email_send').serialize(),
 			success: function(result) {
-				$('#email_active_send').val("인증 이메일 재발송").attr('disabled', false);
+				$('#email_active_send').val("인증 이메일 발송").attr('disabled', false);
 				alert("인증 이메일이 발송되었습니다.");
 			},
 			error: function(result) {

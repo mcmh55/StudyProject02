@@ -1,7 +1,5 @@
 package com.personal.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +24,15 @@ public class EmailController {
 	private MemberService memberService;
 
 	@RequestMapping(value = "emailSendAction.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String emailSendAction(MemberDTO member, HttpServletRequest request) throws Exception {
+	public String emailSendAction(MemberDTO member) throws Exception {
 
 		logger.info("emailSendAction.do 접근 ");
+		logger.info("member: " + member);
 
 		MemberDTO searchMember = new MemberDTO();
 		searchMember = memberService.selectMemberActive(member);
+		
+		logger.info("searchMember: " + searchMember);
 
 		EmailDTO email = new EmailDTO();
 
@@ -45,6 +46,6 @@ public class EmailController {
 		email.setContent(content);
 		emailSender.SendEmail(email);
 
-		return "board_list.tiles";
+		return "login.tiles";
 	}
 }

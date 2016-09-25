@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,18 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@RequestMapping(value="joinAction.do", method=RequestMethod.POST)
 	@ResponseBody
 	public ResultMessage joinAction(MemberDTO member, Model model) {
 		
 		logger.info("joinAction.do 접근");
+		
+		// 비밀번호 암호화
+		String pwEcode = passwordEncoder.encode(member.getMember_pw());
+		member.setMember_pw(pwEcode);
 		
 		ResultMessage resultMsg = null;
 		
