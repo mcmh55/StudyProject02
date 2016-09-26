@@ -62,12 +62,8 @@ public class MainController {
 			if ( searchMember != null && samePw ) {
 				request.getSession().setAttribute("loginMember", searchMember);
 				
-				if ( searchMember.getMember_active() > 0 ) {
-					resultMsg = new ResultMessage("2");		// 회원 인증된 유저
-				}
-				
-				resultMsg = new ResultMessage("1");			// 인증하지 않은 유저
-				
+				if ( searchMember.getMember_active() > 0 )	resultMsg = new ResultMessage("2");		// 회원 인증된 유저		
+				else										resultMsg = new ResultMessage("1");		// 인증하지 않은 유저
 			} else {
 				resultMsg = new ResultMessage("0");
 			}

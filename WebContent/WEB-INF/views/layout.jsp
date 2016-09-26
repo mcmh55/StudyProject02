@@ -14,44 +14,56 @@
 
 <%-- <tiles:insertAttribute name="head"/> --%>
 
-<!-- css -->
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/bootswatch.css"/>
-<!-- // css -->
+<link rel="stylesheet" type="text/css" href="css/bootswatch.css"/>
 
-<!-- script -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<!-- // script -->
-
-<!-- hold -->
-<%-- <script type="text/javascript" src="<%= request.getContextPath() %>/js/go_url_.js"></script> --%>
-<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
-<!-- // hold -->
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	
 <title>개인 프로젝트</title>
+
+<style type="text/css">
+
+.header_wrap,
+.nav_wrap,
+.middle_wrap,
+.bottom_wrap {
+	width: 100%;
+}
+
+.aside_wrap {
+	width: 200px;
+	float: left;
+}
+
+.section_wrap {
+	width: 1300px;
+}
+
+</style>
 	
 </head>
 <body>
 
-<div id="body_wrap">
-	<div id="top_wrap">
-		<div id="header_wrap">
+<div class="body_wrap">
+	<div class="top_wrap">
+		<div class="header_wrap">
 			<tiles:insertAttribute name="header"/>
 		</div>
-		<div id="nav_wrap">
+		<div class="nav_wrap navbar navbar-default">
 			<tiles:insertAttribute name="nav"/>
 		</div>
 	</div>
 	
-	<div id="middle_wrap">
-		<div id="aside_wrap">
+	<div class="middle_wrap">
+		<div class="aside_wrap">
 			<tiles:insertAttribute name="aside"/>
 		</div>
-		<div id="section_wrap">
+		<div class="section_wrap">
 			<tiles:insertAttribute name="section"/>
 		</div>
 	</div>
 	
-	<div id="bottom_wrap">
+	<div class="bottom_wrap">
 		<tiles:insertAttribute name="footer"/>
 	</div>
 	
