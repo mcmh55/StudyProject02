@@ -38,8 +38,8 @@ public class EmailController {
 
 		String reciver = searchMember.getMember_email();
 		String subject = "회원 인증 이메일입니다.";
-	//	String content = "<a href='http://211.201.221.169:8080/PersonalProject01/member_active.do?active=true'>인증 페이지로 이동</a>";
-		String content = "<a href='http://localhost:8080/PersonalProject01/member_active.do?active=true'>인증 페이지로 이동</a>";
+	//	String content = "<a href='http://211.201.221.169:8090/PersonalProject01/member_active.do?active=true'>인증 페이지로 이동</a>";
+		String content = "<a href='http://localhost:8090/PersonalProject01/member_active.do?active=true'>인증 페이지로 이동</a>";
 
 		email.setReciver(reciver);
 		email.setSubject(subject);

@@ -11,8 +11,9 @@
 	</appender>
 	
 	<!--  날짜별 로그  파일 저장대는 방법에 따라 설정을 따로 할수 있다. -->
+	<!-- 
 	<appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">
-		<!-- 이것은 날짜별로 로그를 남김. 파일명.확장자.DatePattern으로 정의 함 -->
+		이것은 날짜별로 로그를 남김. 파일명.확장자.DatePattern으로 정의 함
 		<param name="file" value="H:/JAVA_Project/personal/log/dailyout.log" />
 		<param name="Append" value="true" />
 		<param name="DatePattern" value="'.'yyMMdd" />
@@ -21,7 +22,7 @@
 				value="%t> [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%L] [%p] %m %n" />
 		</layout>
 	</appender>
-	
+	 -->
 	<!-- Application Loggers -->
 	<!-- <logger name="sist.co.controller"> -->
 	<logger name="com.personal">

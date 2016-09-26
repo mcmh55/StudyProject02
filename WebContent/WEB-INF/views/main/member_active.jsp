@@ -31,7 +31,7 @@
 		</div>
 		<br/>
 		<span>
-			<input type="button" id="email_active_send" class="btn btn-primary" value="입장"
+			<input type="button" id="btn_connect" class="btn btn-primary" value="입장"
 			style="font-size: 12pt;" />
 		</span>
 	</c:when>
@@ -49,10 +49,6 @@
 			<input type="button" id="btn_logout" class="btn btn-default" value="로그아웃" style="font-size: 12pt;" />
 		</span>
 	</c:when>
-	
-	<c:otherwise>
-		active: ${ active }
-	</c:otherwise>
 	</c:choose>
 	
 	<form id="frm_email_send">
@@ -66,6 +62,10 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+	$('#btn_connect').click(function() {
+		location.href="board_list.do";
+	});
+	
 	$('#email_active_send').click(function() {
 		
 		$(this).val("발송중...").attr('disabled', true);

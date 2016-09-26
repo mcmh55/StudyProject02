@@ -25,7 +25,6 @@ public class BoardController {
 		
 		logger.info("board_list.do 접근");
 		
-		
 		return "board_list.tiles";
 	}
 	
