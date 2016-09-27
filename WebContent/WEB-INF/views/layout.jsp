@@ -23,20 +23,54 @@
 
 <style type="text/css">
 
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-image: url("images/common/background.png");
+}
+
+.body_wrap {
+	width: 1200px;
+	height: 100%;
+	margin: 0 auto;
+	/* background-color: fuchsia; */
+}
+
+.middle_wrap {
+	width: 1200px;
+}
+
 .header_wrap,
-.nav_wrap,
-.middle_wrap,
-.bottom_wrap {
+.nav_wrap {
 	width: 100%;
+}
+
+.middle_wrap {
+	width: 100%;
+	min-height: 1000px;
+	/* background-color: green; */
 }
 
 .aside_wrap {
 	width: 200px;
+	height: 100%;
+	margin: 10px 0;
 	float: left;
 }
 
 .section_wrap {
-	width: 1300px;
+	width: 1000px;
+	padding-left: 20px;
+	float: left;
+	/* background-color: gray; */
+}
+
+.bottom_wrap {
+	width: 100%;
+	height: 50px;
+	float: left;
+	/* background-color: orange; */
 }
 
 </style>
@@ -66,7 +100,6 @@
 	<div class="bottom_wrap">
 		<tiles:insertAttribute name="footer"/>
 	</div>
-	
 </div>
 
 </body>
