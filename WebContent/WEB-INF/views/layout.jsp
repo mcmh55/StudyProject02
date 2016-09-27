@@ -28,7 +28,6 @@ html, body {
 	margin: 0;
 	padding: 0;
 	background-image: url("images/common/background.png");
-	/* background-repeat: no-repeat; */
 }
 
 .body_wrap {
