@@ -8,17 +8,17 @@
 <insert id="addMember" parameterType="com.personal.model.MemberDTO">
 	INSERT INTO PP1_MEMBER
 	(
-		MEMBER_IDX, MEMBER_ID, MEMBER_PW, MEMBER_NICKNAME
-		, MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS
-		, MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
-		, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
+		MEMBER_IDX, MEMBER_ID, MEMBER_PW, MEMBER_NICKNAME,
+		MEMBER_NAME, MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS,
+		MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE,
+		MEMBER_EMAIL, MEMBER_PHONE, MEMBER_ACTIVE, MEMBER_AUTH
 	)
 	VALUES
 	(
-		PP1_MEMBER_SEQ.NEXTVAL, #{member_id}, #{member_pw}, #{member_nickname}
-		, #{member_name}, #{member_sex}, #{member_birthday}, #{member_address}
-		, #{member_check_email}, #{member_check_sms}, #{member_check_phone}
-		, #{member_email}, #{member_phone}, 0, 0
+		PP1_MEMBER_SEQ.NEXTVAL, #{member_id}, #{member_pw}, #{member_nickname},
+		#{member_name}, #{member_sex}, #{member_birthday}, #{member_address},
+		#{member_check_email}, #{member_check_sms}, #{member_check_phone},
+		#{member_email}, #{member_phone}, 0, 0
 	)
 </insert>
 
@@ -45,5 +45,14 @@
 	MEMBER_ACTIVE=1
 	WHERE MEMBER_ID=#{memberId}
 </update>
+
+<select id="selectMemberLoginInfo" parameterType="String" resultType="com.personal.model.MemberDTO">
+	SELECT 	MEMBER_IDX, MEMBER_ID, MEMBER_NICKNAME, MEMBER_NAME, 
+			MEMBER_SEX, MEMBER_BIRTHDAY, MEMBER_ADDRESS,
+			MEMBER_CHECK_EMAIL, MEMBER_CHECK_SMS, MEMBER_CHECK_PHONE
+			MEMBER_EMAIL, MEMBER_PHONE, MEMBER_AUTH
+	FROM PP1_MEMBER
+	WHERE MEMBER_ID=#{memberId}
+</select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.personal.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.model.MemberDTO;
@@ -89,5 +91,34 @@ public class MemberController {
 		}
 		
 		return "member_active.tiles";
+	}
+	
+	// 회원 로그인 정보 변경
+	// 회원 인증 과정에서 세션에 저장되는 정보를 다시 확인해 볼 필요있음
+	@RequestMapping(value="member_login.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String memberLogin(HttpServletRequest request,
+							@RequestParam (value = "member_id") String memberId) throws Exception {
+		
+		logger.info("member_login.do 접근 ");
+		
+		MemberDTO member = memberService.selectMemberLoginInfo(memberId);
+		
+		HttpSession session = request.getSession();
+		session.removeAttribute("loginMember");
+		session.setAttribute("loginMember", member);
+		session.setMaxInactiveInterval(60*60*24);	// 하루동안 유지
+		
+		logger.info("member: " + member.toString());
+		
+		return "redirect:/board_list.do";
+	}
+	
+	// 회원정보 조회
+	@RequestMapping(value="member_info.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String memberInfo() throws Exception {
+		
+		logger.info("member_info.do 접근 ");
+		
+		return "member_info.tiles";
 	}
 }

@@ -62,7 +62,7 @@
 	</span>
 	<span style="margin: 0px 20px;">
 		<input type="button" id="btn_join" class="btn btn-primary btn-lg" value="회원가입" style="font-size: 14pt;"
-		data-toggle="modal" data-target="#join_popup" />
+			data-toggle="modal" data-target="#join_popup" />
 	</span>
 	<!-- // 로그인, 회원가입 버튼 -->
 	
@@ -77,7 +77,7 @@
 
 <!-- 로그인 확인 안내(Modal 방식) -->
 <div class="modal fade" id="login_popup" tabindex="-1" role="dialog"
-aria-labelledby="myModalLabel" data-keyboard="true">
+	aria-labelledby="myModalLabel" data-keyboard="true">
 <div id="login_modal" class="modal-dialog" role="document" style="width: 600px;">
 <div class="modal-content">
 <div class="modal-body" style="padding: 20px auto;">
@@ -85,7 +85,7 @@ aria-labelledby="myModalLabel" data-keyboard="true">
 </div>
 <div class="modal-footer" style="text-align: center;">
 	<button type="button" id="frm_join_close" class="btn btn-default" 
-	data-dismiss="modal" style="font-size: 12pt;">닫기</button>
+		data-dismiss="modal" style="font-size: 12pt;">닫기</button>
 </div>
 </div>
 </div>
@@ -112,7 +112,7 @@ $('#btn_login').click( function() {
 				location.href = "member_active.do";
 				
 			} else if ( result.message == "2" ) {
-				location.href = "board_list.do";
+				$('#frm_login').attr('action', 'member_login.do').attr('method', 'POST').submit();
 				
 			} else {
 				alert("잠시 후 다시 시도해주세요.");

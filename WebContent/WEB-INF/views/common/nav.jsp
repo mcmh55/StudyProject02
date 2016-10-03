@@ -30,7 +30,7 @@
 					</a>
 					
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">프로필</a></li>
+						<li><a href="member_info.do">프로필</a></li>
 						<li><a href="#">프로필 수정</a></li>
 						<li class="divider"></li>
 						<li><a href="#">회원탈퇴</a></li>

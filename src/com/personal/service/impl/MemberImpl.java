@@ -37,4 +37,9 @@ public class MemberImpl implements MemberService{
 	public void updateMemberActive(String memberId) throws Exception {
 		memberDAO.updateMemberActive(memberId);
 	}
+
+	@Override
+	public MemberDTO selectMemberLoginInfo(String memberId) throws Exception {
+		return memberDAO.selectMemberLoginInfo(memberId);
+	}
 }
