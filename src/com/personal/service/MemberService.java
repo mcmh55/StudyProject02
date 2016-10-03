@@ -9,4 +9,5 @@ public interface MemberService {
 	MemberDTO selectMemberLogin(MemberDTO member) throws Exception;
 	MemberDTO selectMemberActive(MemberDTO member) throws Exception;
 	void updateMemberActive(String memberId) throws Exception;
+	MemberDTO selectMemberLoginInfo(String memberId) throws Exception;
 }

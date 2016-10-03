@@ -34,4 +34,8 @@ public class MemberDAO {
 	public void updateMemberActive(String memberId) throws Exception {
 		sqlSession.update(ns + "updateMemberActive", memberId);
 	}
+	
+	public MemberDTO selectMemberLoginInfo(String memberId) throws Exception {
+		return sqlSession.selectOne(ns + "selectMemberLoginInfo", memberId);
+	}
 }

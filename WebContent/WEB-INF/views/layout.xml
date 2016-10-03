@@ -18,4 +18,8 @@
 		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
 	</definition>
 	
+	<definition name="member_info.tiles" extends="board_list.tiles">
+		<put-attribute name="section" value="/WEB-INF/views/member/member_info.jsp"/>
+	</definition>
+	
 </tiles-definitions>

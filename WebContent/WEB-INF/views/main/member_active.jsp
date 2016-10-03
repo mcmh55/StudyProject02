@@ -63,7 +63,7 @@
 
 $(document).ready(function() {
 	$('#btn_connect').click(function() {
-		location.href="board_list.do";
+		$('#frm_email_send').attr('action', 'member_login.do').attr('method', 'POST').submit();
 	});
 	
 	$('#email_active_send').click(function() {
